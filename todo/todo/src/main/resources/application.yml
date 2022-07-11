@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:33306/todo2?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3306/todo?serverTimezone=Asia/Seoul
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
