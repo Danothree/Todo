@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    #url: jdbc:h2:~/test
+    #driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/todo?serverTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: Password!
+
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        # ?? ?? sql?
+        format_sql: true
+    # ddl-auto  ??? ???? ?? ???? ??
+    generate-ddl: true
+    # sql ????
+    show-sql: true
+    database: mysql
+    #database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+
+  devtools:
+    livereload:
+      enabled: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
