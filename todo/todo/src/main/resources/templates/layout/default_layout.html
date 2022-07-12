@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+<!--공통 헤드-->
+<th:block th:replace="/fragments/header :: headerFragment"></th:block>
 <body>
-<div layout:fragment="fragment-header"></div>
-<div layout:fragment="fragment-content"></div>
-<div layout:fragment="fragment-footer"></div>
+<!-- 컨텐츠 -->
+<th:block layout:fragment="fragment-content"></th:block>
+
+<!--공통 하단-->
+<th:block th:replace="/fragments/footer :: footerFragment"></th:block>
+
+<!--공통 스크립트-->
+<th:block th:replace="/fragments/script :: scriptFragment"></th:block>
 </body>
 </html>
