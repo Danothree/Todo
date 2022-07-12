@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://thymeleaf.org">
+<head>
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="main-box">
+            <header th:replace="/fragments/header.html :: fragment-header"></header>
+
+            <h2 class="top">ToDo : 오늘의 할일</h2><br>
+
+            <form th:action="@{/todolist/create}" method="post">
+                <div class="d-flex">
+                    <input type="text" placeholder="일정을 추가해주세요" class="underline" id="todolistContent" name="todolistContent">
+                    <button class="btn">add</button>
+                </div>
+            </form>
+            <hr>
+
+          <!--  <div class="d-flex input-box">
+                <input type="checkbox">
+                <input type="text" placeholder="일정" class="underline">
+                <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
+            </div><br>
+
+            <div class="d-flex input-box">
+                <input type="checkbox">
+                <input type="text" placeholder="일정" class="underline">
+                <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
+            </div><br>
+
+            <div class="d-flex input-box">
+                <input type="checkbox">
+                <input type="text" placeholder="일정" class="underline">
+                <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
+            </div><br>
+
+            <div class="d-flex input-box">
+                <input type="checkbox">
+                <input type="text" placeholder="일정" class="underline">
+                <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
+            </div><br>
+
+            <div class="d-flex input-box">
+                <input type="checkbox">
+                <input type="text" placeholder="일정" class="underline">
+                <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
+            </div><br>
+
+            <div class="d-flex input-box">
+                <input type="checkbox">
+                <input type="text" placeholder="일정" class="underline">
+                <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
+            </div><br>-->
+
+            <table>
+                <tr th:each="todolist : ${todolist}">
+                    <td>
+                        <input type="checkbox">
+                        <input type="text" placeholder="일정" class="underline" th:text="${todolist.todolistContent}">
+                        <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
+                    </td>
+                </tr>
+            </table>
+
+            <br><br>
+            <footer th:replace="/fragments/footer.html :: fragment-footer"></footer>
+        </div>
+    </div>
+</body>
+</html>

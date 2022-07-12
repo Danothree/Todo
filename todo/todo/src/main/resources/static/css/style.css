@@ -1,0 +1,33 @@
+
+
+body {
+    text-align: center;
+    height: 800px;
+}
+
+.main-section {
+    height: 500px;
+    width: 1000px;
+}
+
+.input-form  {
+    width: 300px;
+}
+
+.main-box {
+    width: 500px;
+    margin-top: 50px;
+    padding: 30px;
+    border: 1px solid #e2e2e2;
+}
+
+.underline {
+    border-left-width:0;
+    border-right-width:0;
+    border-top-width:0;
+    border-bottom-width:1;
+}
+
+.input-box:hover {
+    background-color: #e2e2e2;
+}
