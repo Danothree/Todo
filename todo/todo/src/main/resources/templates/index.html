@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorator="layout/default_layout">
-    <th:block layout:fragment="fragment-content">
+      layout:decorate="~{layout/default_layout}">
+
+    <body layout:fragment="content">
         <section class="vh-100 gradient-custom">
             <div class="container py-5 h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
@@ -111,5 +112,5 @@
                 </div>
             </div>
         </section>
-    </th:block>
+    </body>
 </html>
