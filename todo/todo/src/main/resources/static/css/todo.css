@@ -108,7 +108,7 @@ button {
 
 .todo-item.checked .todo{
     font-style: italic;
-    text-decoration: line-through;
+    /*text-decoration: line-through;*/
     color: lightgray;
 }
 
