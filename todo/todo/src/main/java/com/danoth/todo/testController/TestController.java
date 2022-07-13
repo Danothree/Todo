@@ -15,22 +15,43 @@ public class TestController {
 
     private final TodoService todoService;
 
-    @GetMapping("/todolist")
-    public String list() {
-        return "todolist";
+    @RequestMapping("/")
+    public String root() {
+        return "redirect:todolist";
     }
 
+    /**
+     * 조회
+     * @param model
+     * @return
+     */
     @RequestMapping("/todolist")
     public String list(Model model) {
-        List<Todolist> todolist = this.todoService.getList();
-        model.addAttribute("todolist",todolist);
+        //List<Todolist> todolist = this.todoService.getList();
+        model.addAttribute("todolist",todoService.getList());
         return "todolist";
     }
 
+    /**
+     * 추가
+     * @param todolistContent
+     * @return
+     */
     @PostMapping("/todolist/create")
     public String todoCreate(@RequestParam String todolistContent) {
         todoService.create(todolistContent);
         return "redirect:/todolist"; // 주소경로에 공백도 인식하기 때문에 공백있으면 404 에러 뜬다.
+    }
+
+    /**
+     * 삭제
+     * @param id
+     * @return
+     */
+    @GetMapping("/todolist/delete/{id}")
+    public String todoDelete(@PathVariable Long id) {
+        todoService.delete(id);
+        return "redirect:/todolist";
     }
 
 }

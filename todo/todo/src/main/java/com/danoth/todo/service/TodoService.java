@@ -12,8 +12,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TodoService {
 
-  private final TodoRepository todoRepository;
+    private final TodoRepository todoRepository;
 
+    // 추가
     public void create(String todolistContent) {
         Todolist todolist = new Todolist();
         todolist.setTodolistContent(todolistContent);
@@ -23,7 +24,13 @@ public class TodoService {
         todoRepository.save(todolist);
     }
 
+    // 조회
     public List<Todolist> getList() {
         return todoRepository.findAll();
+    }
+
+    // 삭제
+    public void delete(Long id) {
+        todoRepository.deleteById(id);
     }
 }

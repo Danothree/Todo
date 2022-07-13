@@ -19,48 +19,12 @@
             </form>
             <hr>
 
-          <!--  <div class="d-flex input-box">
-                <input type="checkbox">
-                <input type="text" placeholder="일정" class="underline">
-                <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
-            </div><br>
-
-            <div class="d-flex input-box">
-                <input type="checkbox">
-                <input type="text" placeholder="일정" class="underline">
-                <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
-            </div><br>
-
-            <div class="d-flex input-box">
-                <input type="checkbox">
-                <input type="text" placeholder="일정" class="underline">
-                <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
-            </div><br>
-
-            <div class="d-flex input-box">
-                <input type="checkbox">
-                <input type="text" placeholder="일정" class="underline">
-                <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
-            </div><br>
-
-            <div class="d-flex input-box">
-                <input type="checkbox">
-                <input type="text" placeholder="일정" class="underline">
-                <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
-            </div><br>
-
-            <div class="d-flex input-box">
-                <input type="checkbox">
-                <input type="text" placeholder="일정" class="underline">
-                <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
-            </div><br>-->
-
-            <table>
+            <table class="table text-center">
                 <tr th:each="todolist : ${todolist}">
-                    <td>
+                    <td class="d-flex">
                         <input type="checkbox">
-                        <input type="text" placeholder="일정" class="underline" th:text="${todolist.todolistContent}">
-                        <a href="#"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
+                        <input type="text" placeholder="일정" class="underline" th:value="${todolist.todolistContent}" disabled>
+                        <a href="#" th:href="@{/todolist/delete/{id}(id=${todolist.id})}"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
                     </td>
                 </tr>
             </table>
