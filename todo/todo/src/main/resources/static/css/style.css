@@ -1,8 +1,17 @@
+.top-logo {
+    width: 500px;
+    background: #8cdbf9;
+    border-radius: 0px 0px 30px 30px;
+
+}
 body {
     text-align: center;
     height: 800px;
 }
 
+.footer-logo {
+    width: 500px;
+}
 .main-section {
     height: 500px;
     width: 1000px;
@@ -15,6 +24,7 @@ body {
 .main-box {
     width: 500px;
     margin-top: 50px;
+    margin-bottom: 50px;
     padding: 30px;
     border: 1px solid #e2e2e2;
 }

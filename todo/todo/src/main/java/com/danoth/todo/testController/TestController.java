@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequiredArgsConstructor
+@RequiredArgsConstructor // final이 붙은 생성자를 자동으로 생성
 public class TestController {
 
     private final TodoService todoService;
@@ -38,8 +38,8 @@ public class TestController {
      * @return
      */
     @PostMapping("/todolist/create")
-    public String todoCreate(@RequestParam String todolistContent) {
-        todoService.create(todolistContent);
+    public String todoCreate(Todolist todolist) {
+        todoService.create(todolist);
         return "redirect:/todolist"; // 주소경로에 공백도 인식하기 때문에 공백있으면 404 에러 뜬다.
     }
 

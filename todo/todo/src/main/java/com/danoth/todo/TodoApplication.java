@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @Slf4j
 @SpringBootApplication
-@EnableJpaAuditing
+@EnableJpaAuditing // jpa auditing 애노테이션들이 활성화 할 수 있도록 해줌
 public class TodoApplication {
 
 	public static void main(String[] args) {
