@@ -78,7 +78,6 @@
                     <input type="text"  class="todo-input"  th:field="*{title}"
                        id="title"  th:onkeypress="if( event.keyCode==13 ){addTodo();}" placeholder="해야 할 일을 입력해주세요.">
                 </div>
-
                 <div th:if="${#lists.isEmpty(TodoList)}">
                 </div>
 
