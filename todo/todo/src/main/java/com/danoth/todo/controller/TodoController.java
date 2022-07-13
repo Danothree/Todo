@@ -33,12 +33,4 @@ public class TodoController {
         return "todo/todo";
     }
 
-    public ResponseEntity create(Model model, TodoDto todoDto){
-        List<TodoDto> dtos = service.create(TodoDto.toEntity(todoDto)
-                        .setUserId(temporaryUserId)).stream()
-                .map(TodoDto::new)
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok().build();
-    }
 }

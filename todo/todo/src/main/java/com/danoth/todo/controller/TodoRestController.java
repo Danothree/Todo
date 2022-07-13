@@ -29,4 +29,10 @@ public class TodoRestController {
         service.delete(todoId);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping
+    public ResponseEntity update(TodoDto todoDto){
+        service.update(TodoDto.toEntity(todoDto));
+        return ResponseEntity.ok().build();
+    }
 }

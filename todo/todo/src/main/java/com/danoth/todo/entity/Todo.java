@@ -26,4 +26,9 @@ public class Todo extends TimeEntity{
         this.userId = userId;
         return this;
     }
+
+    public void updateTodo(Todo todo){
+        this.title = todo.getTitle();
+        this.done = todo.isDone();
+    }
 }
