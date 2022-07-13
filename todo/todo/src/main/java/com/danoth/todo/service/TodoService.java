@@ -48,10 +48,21 @@ public class TodoService {
         entity.updateTodo(todo);
     }
 
+    public List<Todo> activeList(String userId) {
+        return repository.findByUserIdAndDone(userId, false);
+    }
+
+    public List<Todo> completedList(String userId) {
+        return repository.findByUserIdAndDone(userId, true);
+    }
+
+    public void clearCompleted(String userId) {
+        repository.deleteByUserIdAndDoneIsTrue(userId);
+    }
+
     private void validate(Todo todo) {
         Assert.isNull(todo, "Entity is null");
         Assert.isNull(todo.getUserId(), "bad userId");
     }
-
 
 }

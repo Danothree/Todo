@@ -109,7 +109,6 @@
             function changeDone(todoId){
                 console.log(todoId + " is done");
                 let changeUrl = "/api/todos/" + todoId;
-
                 $.ajax({
                     type: "put",
                     url: changeUrl,
@@ -121,7 +120,22 @@
                         console.log("error : "+ error);
                     }
                 })
+            }
 
+            // Completed Clear
+            function clearTodo(){
+                let clearUrl = "/api/todos/completed";
+                $.ajax({
+                    type: 'delete',
+                    url: clearUrl,
+                    success: function(){
+                        console.log("completed clear");
+                        window.location.reload();
+                    },
+                    error: function(error){
+                        console.log("error : " + error);
+                    }
+                })
             }
 
 
@@ -147,7 +161,7 @@
                         <li th:each="todo : ${TodoList}" class="todo-item checked">
                             <div th:if="${todo.done}">
                                 <button type="button" class="custom_button" th:id="'button_'+${todo.id}" th:field="${todo.done}"
-                                        th:onclick="'javascript:changeDone(' + ${todo.id} + ')' " >취소</button>
+                                        th:onclick="'javascript:changeDone(' + ${todo.id} + ')' " >●</button>
                             </div>
                             <div th:if="${todo.done}" th:id="'todo_' + ${todo.id}">
                                 <span class="uncheck_todo" th:id="'span_' + ${todo.id}"
@@ -156,7 +170,7 @@
 
                             <div th:unless="${todo.done}">
                                 <button type="button" class="custom_button" th:id="'button_'+${todo.id}" th:field="${todo.done}"
-                                        th:onclick="'javascript:changeDone(' + ${todo.id} + ')' " >완료</button>
+                                        th:onclick="'javascript:changeDone(' + ${todo.id} + ')' " >○</button>
                             </div>
                             <div th:unless="${todo.done}" th:id="'todo_' + ${todo.id}">
                                 <span class="todo" th:id="'span_' + ${todo.id}"
@@ -170,11 +184,14 @@
                 <div class="todo-bottom">
                     <div class="left-items"><span th:text="${count} + ' items left'">3 items left</span></div>
                     <div class="button-group">
-                        <button class="show-all-btn selected" id="allSearch" data-type="all">All</button>
-                        <button class="show-active-btn" data-type="active" id="ActiveSearch">Active</button>
-                        <button class="show-completed-btn" data-type="completed" id="CompletedSearch">Completed</button>
+                        <button class="show-all-btn selected" id="allSearch" data-type="all"
+                                th:onclick="'location.href=' + '\'' + @{/todos} + '\''">All</button>
+                        <button class="show-active-btn" data-type="active" id="ActiveSearch"
+                            th:onclick="'location.href=' + '\'' + @{/todos/active} + '\''" >Active</button>
+                        <button class="show-completed-btn" data-type="completed" id="CompletedSearch"
+                        th:onclick="'location.href=' + '\'' + @{/todos/completed} + '\''">Completed</button>
                     </div>
-                    <button class="clear-completed-btn" id="allClear">Clear Completed</button>
+                    <button class="clear-completed-btn" id="allClear" th:onclick="'javascript:clearTodo()'">Clear Completed</button>
                 </div>
             </div>
 

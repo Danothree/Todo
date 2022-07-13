@@ -37,4 +37,11 @@ public class ApiTodoController {
         service.changeDone(todoId);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/completed")
+    public ResponseEntity clearCompleted(){
+        service.clearCompleted(temporaryUserId);
+        return ResponseEntity.ok().build();
+    }
+
 }

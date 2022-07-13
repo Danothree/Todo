@@ -9,5 +9,7 @@ import java.util.List;
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     List<Todo> findByUserId(String userId);
 
+    List<Todo> findByUserIdAndDone(String userId, boolean done);
 
+    void deleteByUserIdAndDoneIsTrue(String userId);
 }
