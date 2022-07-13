@@ -5,39 +5,35 @@ import com.danoth.todo.model.ListTable;
 import com.danoth.todo.repository.ListTableRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/index")
+@RequestMapping("/ListTable")
 public class TodoController {
 
     private final ListTableRepository listTableRepository;
 
-    @GetMapping
-    public List<ListTable> todoList(){
-        List<ListTable> listTables = listTableRepository.findAll();
-        return listTables;
+    @GetMapping("")
+    public String todoList(Model model){
+        model.addAttribute("listTableDto",new ListTable());
+        model.addAttribute("listTable",listTableRepository.findAll());
+        return "index";
     }
 
-    @PostMapping
-    public String saveTodoList(ListTable listTable){
-        listTableRepository.save(listTable);
-        return "redirect:/";
-    }
-
-    @PutMapping("/{table_id}")
+    @PutMapping(value = "/{table_id}")
     public String updateTodoList(@PathVariable("table_id") Long table_id, ListTable listTable){
         ListTable findListTable = listTableRepository.findById(table_id).get();
         listTableRepository.save(findListTable);
         return "redirect:/";
     }
 
-    @DeleteMapping("/{table_id}")
-    public String deleleTodoList(@PathVariable("table_id") Long table_id){
-        listTableRepository.deleteById(table_id);
-        return "redirect:/";
+    @DeleteMapping("/{id}")
+    public void deleleTodoList(@PathVariable Long id){
+        listTableRepository.deleteById(id);
     }
+
 }

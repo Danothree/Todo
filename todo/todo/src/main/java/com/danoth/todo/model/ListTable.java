@@ -1,13 +1,14 @@
 package com.danoth.todo.model;
 
 import com.danoth.todo.dto.ListTableDTO;
+import lombok.Data;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Getter
+@Data
 public class ListTable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
