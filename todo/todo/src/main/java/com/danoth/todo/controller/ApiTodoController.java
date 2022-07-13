@@ -4,16 +4,12 @@ import com.danoth.todo.dto.TodoDto;
 import com.danoth.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/todos")
 @RequiredArgsConstructor
-public class TodoRestController {
+public class ApiTodoController {
     private String temporaryUserId = "temporary_user";
     private final TodoService service;
 
@@ -27,6 +23,18 @@ public class TodoRestController {
     @DeleteMapping
     public ResponseEntity delete(Long todoId){
         service.delete(todoId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping
+    public ResponseEntity update(TodoDto todoDto){
+        service.update(TodoDto.toEntity(todoDto));
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{todoId}")
+    public ResponseEntity changeDone(@PathVariable Long todoId){
+        service.changeDone(todoId);
         return ResponseEntity.ok().build();
     }
 }

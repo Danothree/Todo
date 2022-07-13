@@ -11,6 +11,7 @@
     <th:block layout:fragment="script">
         <script th:inline="javascript">
 
+
             // Todo 추가
             function addTodo() {
                 let title = document.getElementById('title').value;
@@ -35,7 +36,7 @@
                 })
             }
 
-            // 삭제
+            // Todo 삭제
             function deleteButton(todoId){
                 let x = confirm("정말 삭제하려구요?");
                 const todoUrl = "/api/todos/";
@@ -59,7 +60,7 @@
                 })
             }
 
-            // 수정
+            // Todo 수정
             function updateTodo(e, todoId) {
                 if(e.key === 'Enter'){
                     let title = document.getElementById('changeTodo').value;
@@ -88,7 +89,7 @@
                 }
             }
 
-            // 수정
+            // Todo 수정
             function changeTitle(todoId){
                 console.log("change "+ todoId);
                 let span_id = 'span_' + todoId;
@@ -99,10 +100,30 @@
                 let todo_id = 'todo_' + todoId;
                 let addTag = document.getElementById(todo_id);
 
-                addTag.innerHTML = '<input type=text class="todo-input" autofocus id="changeTodo" " >'
+                addTag.innerHTML = '<input type=text class="todo-input" width="200px" autofocus id="changeTodo" " >'
                 let changeInput =  document.getElementById('changeTodo');
                 changeInput.addEventListener('keyup', event => updateTodo(event, todoId));
             }
+
+            // Todo 완료
+            function changeDone(todoId){
+                console.log(todoId + " is done");
+                let changeUrl = "/api/todos/" + todoId;
+
+                $.ajax({
+                    type: "put",
+                    url: changeUrl,
+                    success: function(){
+                        console.log("change done");
+                        window.location.reload();
+                    },
+                    error: function(error){
+                        console.log("error : "+ error);
+                    }
+                })
+
+            }
+
 
         </script>
     </th:block>
@@ -124,10 +145,20 @@
                 <div th:if="${!#lists.isEmpty(TodoList)}">
                     <ul class="todo-list">
                         <li th:each="todo : ${TodoList}" class="todo-item checked">
-                            <div class="checkbox">
-                                <input type="checkbox" th:value="${todo.done}">
+                            <div th:if="${todo.done}">
+                                <button type="button" class="custom_button" th:id="'button_'+${todo.id}" th:field="${todo.done}"
+                                        th:onclick="'javascript:changeDone(' + ${todo.id} + ')' " >취소</button>
                             </div>
-                            <div th:id="'todo_' + ${todo.id}">
+                            <div th:if="${todo.done}" th:id="'todo_' + ${todo.id}">
+                                <span class="uncheck_todo" th:id="'span_' + ${todo.id}"
+                                      th:ondblclick="'javascript:changeTitle(' + ${todo.id} +')'" th:text="${todo.title}">할 일</span>
+                            </div>
+
+                            <div th:unless="${todo.done}">
+                                <button type="button" class="custom_button" th:id="'button_'+${todo.id}" th:field="${todo.done}"
+                                        th:onclick="'javascript:changeDone(' + ${todo.id} + ')' " >완료</button>
+                            </div>
+                            <div th:unless="${todo.done}" th:id="'todo_' + ${todo.id}">
                                 <span class="todo" th:id="'span_' + ${todo.id}"
                                       th:ondblclick="'javascript:changeTitle(' + ${todo.id} +')'" th:text="${todo.title}">할 일</span>
                             </div>

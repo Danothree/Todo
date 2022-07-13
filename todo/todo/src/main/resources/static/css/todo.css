@@ -106,10 +106,17 @@ button {
     width: 80%;
 }
 
+.uncheck_todo{
+    font-size: 1.3rem;
+    padding: 0 1rem;
+    width: 80%;
+    text-decoration: line-through;
+    color: darkgray;
+}
+
 .todo-item.checked .todo{
     font-style: italic;
-    /*text-decoration: line-through;*/
-    color: lightgray;
+    color: darkmagenta;
 }
 
 .delBtn {
@@ -149,6 +156,22 @@ button {
     padding: 0.2rem 0.5rem;
     margin: 0 0.5rem;
     border-radius: 8px;
+}
+
+.custom_button{
+    margin: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    position: relative;
+    border: none;
+    display: inline-block;
+    padding: 9px 4px;
+    border-radius: 15px;
+    font-family: "paybooc-Light", sans-serif;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 67%);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.25s;
 }
 
 .clear-completed-btn:hover {
