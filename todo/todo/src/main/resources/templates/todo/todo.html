@@ -40,23 +40,25 @@
                 let x = confirm("정말 삭제하려구요?");
                 const todoUrl = "/api/todos/";
 
-                console.log(todoId + "게시물 삭제");
-                let data ={
-                    todoId: todoId
-                }
-
-                $.ajax({
-                    type: "delete",
-                    url: todoUrl,
-                    data: data,
-                    success: function(){
-                        console.log("delete success");
-                        location.href = "/todos"
-                    },
-                    error: function(){
-                        alert("delete error");
+                if(x) {
+                    console.log(todoId + "게시물 삭제");
+                    let data = {
+                        todoId: todoId
                     }
-                })
+
+                    $.ajax({
+                        type: "delete",
+                        url: todoUrl,
+                        data: data,
+                        success: function () {
+                            console.log("delete success");
+                            location.href = "/todos"
+                        },
+                        error: function () {
+                            alert("delete error");
+                        }
+                    })
+                }
             }
 
             // Todo 수정
@@ -136,8 +138,6 @@
                     }
                 })
             }
-
-
         </script>
     </th:block>
 
@@ -152,12 +152,18 @@
                        id="title"  th:onkeypress="if( event.keyCode==13 ){addTodo();}" placeholder="해야 할 일을 입력해주세요.">
                 </div>
 
+                <!-- List 가 없을 때 -->
                 <div th:if="${#lists.isEmpty(TodoList)}">
                 </div>
 
+                <!-- List 가 있을 때 -->
                 <div th:if="${!#lists.isEmpty(TodoList)}">
                     <ul class="todo-list">
+
+                        <!--반복문-->
                         <li th:each="todo : ${TodoList}" class="todo-item checked">
+
+                            <!-- Completed -->
                             <div th:if="${todo.done}">
                                 <button type="button" class="custom_button" th:id="'button_'+${todo.id}" th:field="${todo.done}"
                                         th:onclick="'javascript:changeDone(' + ${todo.id} + ')' " >●</button>
@@ -167,6 +173,7 @@
                                       th:ondblclick="'javascript:changeTitle(' + ${todo.id} +')'" th:text="${todo.title}">할 일</span>
                             </div>
 
+                            <!-- Active -->
                             <div th:unless="${todo.done}">
                                 <button type="button" class="custom_button" th:id="'button_'+${todo.id}" th:field="${todo.done}"
                                         th:onclick="'javascript:changeDone(' + ${todo.id} + ')' " >○</button>
@@ -175,6 +182,8 @@
                                 <span class="todo" th:id="'span_' + ${todo.id}"
                                       th:ondblclick="'javascript:changeTitle(' + ${todo.id} +')'" th:text="${todo.title}">할 일</span>
                             </div>
+
+                            <!-- Delete -->
                             <button class="delBtn" th:onclick="'javascript:deleteButton(' + ${todo.id} + ')'" >x</button>
                         </li>
                     </ul>
