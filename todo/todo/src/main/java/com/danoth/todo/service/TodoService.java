@@ -5,6 +5,7 @@ import com.danoth.todo.entity.Todo;
 import com.danoth.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -21,9 +22,8 @@ public class TodoService {
 
     @Transactional(readOnly = true)
     public List<Todo> retrieve(String userId) {
-        return repository.findByUserId(userId);
+        return repository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "modifiedDate", "done"));
     }
-
 
     public List<Todo> create(Todo todo) {
         //validate(todo);
