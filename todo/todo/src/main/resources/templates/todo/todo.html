@@ -40,6 +40,7 @@
                 let x = confirm("정말 삭제하려구요?");
                 const todoUrl = "/api/todos/";
 
+                console.log(todoId + "게시물 삭제");
                 let data ={
                     todoId: todoId
                 }
@@ -59,10 +60,48 @@
             }
 
             // 수정
-            function updateButton(todoId){
+            function updateTodo(e, todoId) {
+                if(e.key === 'Enter'){
+                    let title = document.getElementById('changeTodo').value;
+                    let updateUrl = "/api/todos";
+                    if(!title || title.trim() === ""){
+                        alert("글을 입력해주세요.");
+                        return false;
+                    }else{
+                        $.ajax({
+                            type: 'put',
+                            url: updateUrl,
+                            data: {
+                                title : title,
+                                id : todoId
+                            },
+                            success: function(){
+                                console.log("update success");
+                                window.location.reload();
+                            },
+                            error: function(error){
+                                console.log("update failure");
+                                console.log(JSON.stringify(error));
+                            }
+                        })
+                    }
+                }
+            }
 
-                alert(todoId);
+            // 수정
+            function changeTitle(todoId){
+                console.log("change "+ todoId);
+                let span_id = 'span_' + todoId;
+                let deleteTag = document.getElementById(span_id);
+                deleteTag.remove();
+                console.log("delete span");
 
+                let todo_id = 'todo_' + todoId;
+                let addTag = document.getElementById(todo_id);
+
+                addTag.innerHTML = '<input type=text class="todo-input" autofocus id="changeTodo" " >'
+                let changeInput =  document.getElementById('changeTodo');
+                changeInput.addEventListener('keyup', event => updateTodo(event, todoId));
             }
 
         </script>
@@ -78,18 +117,21 @@
                     <input type="text"  class="todo-input"  th:field="*{title}"
                        id="title"  th:onkeypress="if( event.keyCode==13 ){addTodo();}" placeholder="해야 할 일을 입력해주세요.">
                 </div>
+
                 <div th:if="${#lists.isEmpty(TodoList)}">
                 </div>
 
                 <div th:if="${!#lists.isEmpty(TodoList)}">
                     <ul class="todo-list">
-                        <li th:each="todo,i : ${TodoList}" class="todo-item checked">
+                        <li th:each="todo : ${TodoList}" class="todo-item checked">
                             <div class="checkbox">
                                 <input type="checkbox" th:value="${todo.done}">
                             </div>
-                            <div><span class="todo" id="${'todo_'+ i.count}" th:ondblclick="'javascript:updateButton(' + ${i.count} +')'"
-                                       th:text="${todo.title}">할 일</span></div>
-                            <button class="delBtn" th:onclick="'javascript:deleteButton(' + ${todoId} + ')'" >x</button>
+                            <div th:id="'todo_' + ${todo.id}">
+                                <span class="todo" th:id="'span_' + ${todo.id}"
+                                      th:ondblclick="'javascript:changeTitle(' + ${todo.id} +')'" th:text="${todo.title}">할 일</span>
+                            </div>
+                            <button class="delBtn" th:onclick="'javascript:deleteButton(' + ${todo.id} + ')'" >x</button>
                         </li>
                     </ul>
                 </div>
