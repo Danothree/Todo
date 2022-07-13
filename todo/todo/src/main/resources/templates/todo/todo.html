@@ -26,11 +26,11 @@
                     url: todoUrl,
                     data: TodoDto,
                     success: function () {
-                        console.log("add success");
+                        console.log("create success");
                         location.href = "/todos"
                     },
-                    error: function () {
-                        alert("add error");
+                    error: function (request) {
+                        console.log(error);
                     }
                 })
             }
@@ -210,6 +210,4 @@
 
     <th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>
 </body>
-
-
 </html>

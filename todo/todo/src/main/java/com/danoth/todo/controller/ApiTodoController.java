@@ -28,7 +28,8 @@ public class ApiTodoController {
 
     @PutMapping
     public ResponseEntity update(TodoDto todoDto){
-        service.update(TodoDto.toEntity(todoDto));
+        service.update(TodoDto.toEntity(todoDto)
+                .setUserId(temporaryUserId));
         return ResponseEntity.ok().build();
     }
 

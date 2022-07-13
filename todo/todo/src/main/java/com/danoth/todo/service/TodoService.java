@@ -1,7 +1,8 @@
 package com.danoth.todo.service;
 
-import com.danoth.todo.dto.TodoDto;
 import com.danoth.todo.entity.Todo;
+import com.danoth.todo.exception.InvalidUserIdException;
+import com.danoth.todo.exception.TitleException;
 import com.danoth.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityExistsException;
 import java.util.List;
@@ -26,9 +28,10 @@ public class TodoService {
     }
 
     public List<Todo> create(Todo todo) {
-        //validate(todo);
+        validate(todo);
         repository.save(todo);
-        log.info("entity save ={} ", todo.getId());
+        log.info("user = {} ", todo.getUserId());
+        log.info("entity save = {} ", todo.getId());
         return retrieve(todo.getUserId());
     }
 
@@ -43,9 +46,10 @@ public class TodoService {
     }
 
     public void update(Todo todo) {
-        Todo entity = repository.findById(todo.getId())
-                .orElseThrow(EntityExistsException::new);
-        entity.updateTodo(todo);
+        validate(todo);
+        repository.findById(todo.getId())
+                .orElseThrow(EntityExistsException::new)
+                .updateTodo(todo);
     }
 
     public List<Todo> activeList(String userId) {
@@ -61,8 +65,19 @@ public class TodoService {
     }
 
     private void validate(Todo todo) {
-        Assert.isNull(todo, "Entity is null");
-        Assert.isNull(todo.getUserId(), "bad userId");
+        validateTitle(todo);
+        validateUser(todo);
     }
 
+    private void validateTitle(Todo todo){
+        if(!StringUtils.hasText(todo.getTitle())){
+            throw new TitleException("The input value of the title is invalid.");
+        }
+    }
+
+    private void validateUser(Todo todo){
+        if(!StringUtils.hasText(todo.getUserId())){
+            throw new InvalidUserIdException("Invalid user value");
+        }
+    }
 }
