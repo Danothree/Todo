@@ -33,9 +33,17 @@ body {
     border-left-width:0;
     border-right-width:0;
     border-top-width:0;
-    border-bottom-width:1;
+    border-bottom-width: 1px;
 }
 
 td:hover {
     background-color: #e2e2e2;
+}
+
+.selected{
+    text-decoration:line-through red;
+    border-left-width:0;
+    border-right-width:0;
+    border-top-width:0;
+    border-bottom-width: 1px;
 }

@@ -9,19 +9,20 @@
         <div class="main-box">
             <h2>TO DO LIST</h2><br>
 
-            <form th:action="@{/todolist/create}" method="post">
-                <div class="d-flex">
-                    <input type="text" placeholder="일정을 추가해주세요" class="underline" id="content" name="content">
-                    <button class="btn">add</button>
-                </div>
-            </form><br>
+<!--            <form th:action="@{/todolist/create}" method="post">-->
+            <div class="d-flex">
+                <!--엔터키 이벤트는 버튼이 아니라 input 태그에 적용-->
+                <input type="text" placeholder="일정을 추가해주세요" class="underline" id="content" name="content" onkeyup="enterkey()">
+                <button type="button" class="btn" onclick="addBtn()" >add</button>
+            </div>
+<!--            </form><br>-->
 
             <table class="table text-center">
                 <tr th:each="todo : ${todo}">
                     <td class="d-flex">
-                        <input type="checkbox">
-                        <input type="text" placeholder="일정" class="underline" th:value="${todo.content}" disabled>
-                        <a th:href="@{/todolist/delete/{id}(id=${todo.id})}"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
+                        <input type="checkbox" th:onclick="'javascript:changeClass('+${todo.id}+')'" >
+                        <input type="text" placeholder="일정" class="underline" th:value="${todo.content}" th:id="'title' + ${todo.id}" disabled>
+                        <a th:href="@{/todolist/delete/{id}(id=${todo.id})}"><img th:src="@{/img/delete.png}" width="25px" height="25px" onclick="deleteBtn()"></a>
                     </td>
                 </tr>
             </table>
@@ -30,5 +31,52 @@
         <footer th:replace="/fragments/footer.html :: fragment-footer"></footer>
     </div>
 
+<script type="text/javascript" >
+
+    function enterkey() {
+        if (window.event.keyCode == 13) {
+            addBtn();
+        }
+    }
+
+    function changeClass(todoId){
+        let idName = "title" + todoId;
+        let todo = document.getElementById(idName).className; // idName 아이디 요소의(object 전체정보)를 가져와서 클래스를 호출한다. underline
+        if(todo === 'underline'){
+            document.getElementById(idName).className = 'selected'; // selected라는 클래스를 넣어준다.
+            return;
+        } else {
+            document.getElementById(idName).className ='underline'; // underline라는 클래스를 넣어준다.
+            return;
+        }
+    }
+
+
+    // form태그 안에 button이 있으면
+    function addBtn() {
+        //alert('click');
+        let content = $('#content').val().trim();
+        if (content == '') {
+            alert('일정을 입력해주세요!!');
+            return;
+        }
+
+        $.ajax({
+            type: 'post'
+            , url: '/todolist/create'
+            , data: {
+                content: content
+            }
+            , success: function(){
+                window.location.reload();
+                alert("create success");
+            }
+            , error: function(){
+                alert("create failure");
+            }
+        });
+    }
+
+</script>
 </body>
 </html>
