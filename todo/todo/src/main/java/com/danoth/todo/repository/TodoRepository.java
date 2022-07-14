@@ -4,13 +4,15 @@ import com.danoth.todo.dto.TodoDto;
 import com.danoth.todo.entity.Todo;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 public interface TodoRepository extends JpaRepository<Todo, Long> {
     List<Todo> findByUserId(String userId, Sort sort);
 
-    List<Todo> findByUserIdAndDone(String userId, boolean done);
+    List<Todo> findByUserIdAndSuccess(String userId, boolean success);
 
-    void deleteByUserIdAndDoneIsTrue(String userId);
+    @Query
+    void deleteByUserIdAndSuccessIsTrue(String userId);
 }

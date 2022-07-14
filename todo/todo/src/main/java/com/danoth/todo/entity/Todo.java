@@ -20,7 +20,7 @@ public class Todo extends TimeEntity{
 
     private String title;
 
-    private boolean done;
+    private boolean success;
 
     public Todo setUserId(String userId){
         this.userId = userId;
@@ -28,11 +28,11 @@ public class Todo extends TimeEntity{
     }
 
     public void changeDone(){
-        done = !done;
+        success = !success;
     }
 
     public void updateTodo(Todo todo){
         this.title = todo.getTitle();
-        this.done = todo.isDone();
+        this.success = todo.isSuccess();
     }
 }

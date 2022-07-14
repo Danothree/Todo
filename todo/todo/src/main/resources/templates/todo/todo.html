@@ -161,22 +161,22 @@
                         <li th:each="todo : ${TodoList}" class="todo-item checked">
 
                             <!-- Completed -->
-                            <div th:if="${todo.done}">
-                                <button type="button" class="custom_button" th:id="'button_'+${todo.id}" th:field="${todo.done}"
+                            <div th:if="${todo.success}">
+                                <button type="button" class="custom_button" th:id="'button_'+${todo.id}" th:field="${todo.success}"
                                         th:onclick="'javascript:changeDone(' + ${todo.id} + ')' " >✔</button>
                             </div>
 
-                            <div th:if="${todo.done}" th:id="'todo_' + ${todo.id}">
+                            <div th:if="${todo.success}" th:id="'todo_' + ${todo.id}">
                              <span class="uncheck_todo" th:id="'span_' + ${todo.id}"
                                    th:ondblclick="'javascript:changeTitle(' + ${todo.id} +')'" th:text="${todo.title}">할 일</span>
                             </div>
 
                           <!-- Active -->
-                            <div th:unless="${todo.done}">
-                                <button type="button" class="custom_button" th:id="'button_'+${todo.id}" th:field="${todo.done}"
+                            <div th:unless="${todo.success}">
+                                <button type="button" class="custom_button" th:id="'button_'+${todo.id}" th:field="${todo.success}"
                                         th:onclick="'javascript:changeDone(' + ${todo.id} + ')' " >○</button>
                             </div>
-                            <div th:unless="${todo.done}" th:id="'todo_' + ${todo.id}">
+                            <div th:unless="${todo.success}" th:id="'todo_' + ${todo.id}">
                                 <span class="todo" th:id="'span_' + ${todo.id}"
                                       th:ondblclick="'javascript:changeTitle(' + ${todo.id} +')'" th:text="${todo.title}">할 일</span>
                             </div>

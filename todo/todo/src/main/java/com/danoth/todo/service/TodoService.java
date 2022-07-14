@@ -24,7 +24,7 @@ public class TodoService {
 
     @Transactional(readOnly = true)
     public List<Todo> retrieve(String userId) {
-        return repository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "modifiedDate", "done"));
+        return repository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "modifiedDate", "success"));
     }
 
     public List<Todo> create(Todo todo) {
@@ -53,15 +53,15 @@ public class TodoService {
     }
 
     public List<Todo> activeList(String userId) {
-        return repository.findByUserIdAndDone(userId, false);
+        return repository.findByUserIdAndSuccess(userId, false);
     }
 
     public List<Todo> completedList(String userId) {
-        return repository.findByUserIdAndDone(userId, true);
+        return repository.findByUserIdAndSuccess(userId, true);
     }
 
     public void clearCompleted(String userId) {
-        repository.deleteByUserIdAndDoneIsTrue(userId);
+        repository.deleteByUserIdAndSuccessIsTrue(userId);
     }
 
     private void validate(Todo todo) {

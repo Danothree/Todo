@@ -13,18 +13,18 @@ public class TodoDto {
 
     private Long id;
     private String title;
-    private boolean done;
+    private boolean success;
 
     public TodoDto(Todo todo){
         this.id = todo.getId();
         this.title = todo.getTitle();
-        this.done = todo.isDone();
+        this.success = todo.isSuccess();
     }
 
     public static Todo toEntity(TodoDto dto){
         return Todo.builder()
                 .id(dto.getId())
-                .done(dto.isDone())
+                .success(dto.isSuccess())
                 .title(dto.title)
                 .build();
     }
