@@ -12,7 +12,7 @@
 <!--            <form th:action="@{/todolist/create}" method="post">-->
             <div class="d-flex">
                 <!--엔터키 이벤트는 버튼이 아니라 input 태그에 적용-->
-                <input type="text" placeholder="일정을 추가해주세요" class="underline" id="content" name="content" onkeyup="enterkey()">
+                <input type="text" placeholder="일정을 추가해주세요" class="underline" id="content" name="content" onkeyup="enterkey()" >
                 <button type="button" class="btn" onclick="addBtn()" >add</button>
             </div>
 <!--            </form><br>-->
@@ -21,7 +21,7 @@
                 <tr th:each="todo : ${todo}">
                     <td class="d-flex">
                         <input type="checkbox" th:onclick="'javascript:changeClass('+${todo.id}+')'" >
-                        <input type="text" placeholder="일정" class="underline" th:value="${todo.content}" th:id="'title' + ${todo.id}" disabled>
+                        <input type="text" placeholder="일정" class="underline" th:value="${todo.content}" th:id="'title' + ${todo.id}">
                         <a th:href="@{/todolist/delete/{id}(id=${todo.id})}"><img th:src="@{/img/delete.png}" width="25px" height="25px" onclick="deleteBtn()"></a>
                     </td>
                 </tr>
@@ -76,6 +76,8 @@
             }
         });
     }
+
+
 
 </script>
 </body>
