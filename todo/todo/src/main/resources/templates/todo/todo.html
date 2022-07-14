@@ -4,33 +4,32 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/default_layout">
 
-<th:block layout:fragment="head" th:include="@{/fragments/head}"></th:block>
+<th:block layout:fragment="head" th:include="@{fragments/head}"></th:block>
 
 <body>
-    <th:block layout:fragment="header" th:include="@{/fragments/header}"></th:block>
+    <th:block layout:fragment="header" th:include="@{fragments/header}"></th:block>
     <th:block layout:fragment="script">
         <script th:inline="javascript">
 
-            // Todo 추가
-            function addTodo() {
-                let title = document.getElementById('title').value;
-                let TodoDto ={
-                    title: title
-                }
+            let basicUrl = "api/todos/";
 
-                const todoUrl = "/api/todos"
-                console.log("title: " + title)
+            // Todo 추가
+            function createTodo() {
+                let title = document.getElementById('title').value;
+                console.log("create title: " + title)
 
                 $.ajax({
                     type: "post",
-                    url: todoUrl,
-                    data: TodoDto,
-                    success: function () {
-                        console.log("create success");
-                        location.href = "/todos"
+                    url: basicUrl,
+                    data: {
+                        title : title
                     },
-                    error: function (request) {
-                        console.log(error);
+                    success: function () {
+                        console.log("create title success");
+                        window.location.reload();
+                    },
+                    error: function (request,status,error) {
+                        console.log("error: " + request.responseText);
                     }
                 })
             }
@@ -38,18 +37,15 @@
             // Todo 삭제
             function deleteButton(todoId){
                 let x = confirm("정말 삭제하려구요?");
-                const todoUrl = "/api/todos/";
 
                 if(x) {
                     console.log(todoId + "게시물 삭제");
-                    let data = {
-                        todoId: todoId
-                    }
-
                     $.ajax({
                         type: "delete",
-                        url: todoUrl,
-                        data: data,
+                        url: basicUrl,
+                        data: {
+                            todoId: todoId
+                        },
                         success: function () {
                             console.log("delete success");
                             location.href = "/todos"
@@ -65,43 +61,45 @@
             function updateTodo(e, todoId) {
                 if(e.key === 'Enter'){
                     let title = document.getElementById('changeTodo').value;
-                    let updateUrl = "/api/todos";
                     if(!title || title.trim() === ""){
                         alert("글을 입력해주세요.");
                         return false;
-                    }else{
-                        $.ajax({
-                            type: 'put',
-                            url: updateUrl,
-                            data: {
-                                title : title,
-                                id : todoId
-                            },
-                            success: function(){
-                                console.log("update success");
-                                window.location.reload();
-                            },
-                            error: function(error){
-                                console.log("update failure");
-                                console.log(JSON.stringify(error));
-                            }
-                        })
                     }
+                    $.ajax({
+                        type: 'put',
+                        url: basicUrl,
+                        data: {
+                            title : title,
+                            id : todoId
+                        },
+                        success: function(){
+                            console.log("update success");
+                            window.location.reload();
+                        },
+                        error: function(error){
+                            console.log("update failure");
+                            console.log(JSON.stringify(error));
+                        }
+                    })
                 }
             }
 
             // Todo 수정
             function changeTitle(todoId){
                 console.log("change "+ todoId);
+
+                // 기존 Span을 지운다.
                 let span_id = 'span_' + todoId;
                 let deleteTag = document.getElementById(span_id);
                 deleteTag.remove();
                 console.log("delete span");
 
+                // todo_{todo Id}인 div 를 찾는다.
                 let todo_id = 'todo_' + todoId;
                 let addTag = document.getElementById(todo_id);
 
-                addTag.innerHTML = '<input type=text class="todo-input" width="200px" autofocus id="changeTodo" " >'
+                // input을 따로 추가해준다.
+                addTag.innerHTML = '<input type=text class="todo-input" width="200px" autofocus id="changeTodo">'
                 let changeInput =  document.getElementById('changeTodo');
                 changeInput.addEventListener('keyup', event => updateTodo(event, todoId));
             }
@@ -109,7 +107,7 @@
             // Todo 완료
             function changeDone(todoId){
                 console.log(todoId + " is done");
-                let changeUrl = "/api/todos/" + todoId;
+                let changeUrl = basicUrl + todoId;
                 $.ajax({
                     type: "put",
                     url: changeUrl,
@@ -125,10 +123,9 @@
 
             // Completed Clear
             function clearTodo(){
-                let clearUrl = "/api/todos/completed";
                 $.ajax({
                     type: 'delete',
-                    url: clearUrl,
+                    url: basicUrl + "completed",
                     success: function(){
                         console.log("completed clear");
                         window.location.reload();
@@ -149,7 +146,7 @@
                 <div class="todo-input-box" th:object="${TodoDto}">
                     <button class="complete-all-btn" id="todoRegister">✔</button>
                     <input type="text"  class="todo-input"  th:field="*{title}"
-                       id="title"  th:onkeypress="if( event.keyCode==13 ){addTodo();}" placeholder="해야 할 일을 입력해주세요.">
+                       id="title"  th:onkeypress="if( event.keyCode==13 ){createTodo();}" placeholder="해야 할 일을 입력해주세요.">
                 </div>
 
                 <!-- List 가 없을 때 -->
@@ -166,14 +163,15 @@
                             <!-- Completed -->
                             <div th:if="${todo.done}">
                                 <button type="button" class="custom_button" th:id="'button_'+${todo.id}" th:field="${todo.done}"
-                                        th:onclick="'javascript:changeDone(' + ${todo.id} + ')' " >●</button>
-                            </div>
-                            <div th:if="${todo.done}" th:id="'todo_' + ${todo.id}">
-                                <span class="uncheck_todo" th:id="'span_' + ${todo.id}"
-                                      th:ondblclick="'javascript:changeTitle(' + ${todo.id} +')'" th:text="${todo.title}">할 일</span>
+                                        th:onclick="'javascript:changeDone(' + ${todo.id} + ')' " >✔</button>
                             </div>
 
-                            <!-- Active -->
+                            <div th:if="${todo.done}" th:id="'todo_' + ${todo.id}">
+                             <span class="uncheck_todo" th:id="'span_' + ${todo.id}"
+                                   th:ondblclick="'javascript:changeTitle(' + ${todo.id} +')'" th:text="${todo.title}">할 일</span>
+                            </div>
+
+                          <!-- Active -->
                             <div th:unless="${todo.done}">
                                 <button type="button" class="custom_button" th:id="'button_'+${todo.id}" th:field="${todo.done}"
                                         th:onclick="'javascript:changeDone(' + ${todo.id} + ')' " >○</button>
@@ -208,6 +206,6 @@
         </div>
     </th:block>
 
-    <th:block layout:fragment="footer" th:include="@{/fragments/footer}"></th:block>
+    <th:block layout:fragment="footer" th:include="@{fragments/footer}"></th:block>
 </body>
 </html>

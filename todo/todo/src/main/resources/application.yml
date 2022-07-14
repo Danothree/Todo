@@ -5,6 +5,7 @@ spring:
     username: root
     password: Password!
 
+
   jpa:
     defer-datasource-initialization: true
     hibernate:
@@ -33,3 +34,4 @@ logging:
 
 server:
   port: 10000
+

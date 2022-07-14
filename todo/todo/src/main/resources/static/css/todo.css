@@ -61,7 +61,7 @@ button {
 }
 
 .todo-input {
-    width: 80%;
+    width: 400px;
     text-align: center;
     border: 0;
     outline: none;
@@ -104,6 +104,8 @@ button {
     font-size: 1.3rem;
     padding: 0 1rem;
     width: 80%;
+    border: none;
+    text-align: center;
 }
 
 .uncheck_todo{
@@ -112,6 +114,8 @@ button {
     width: 80%;
     text-decoration: line-through;
     color: darkgray;
+    border: none;
+    text-align: center;
 }
 
 .todo-item.checked .todo{
