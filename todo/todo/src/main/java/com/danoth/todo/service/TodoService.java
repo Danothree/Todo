@@ -1,13 +1,11 @@
 package com.danoth.todo.service;
 
-import com.danoth.todo.entitiy.Todolist;
+import com.danoth.todo.entitiy.Todo;
 import com.danoth.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityExistsException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -17,17 +15,17 @@ public class TodoService {
     private final TodoRepository todoRepository;
 
     // 추가
-    public void create(Todolist todolist) {
+    public void create(Todo todo) {
 //        Todolist todolist = new Todolist();
 //        todolist.setTodolistContent(todolistContent);
 //        todolist.setTodolistCompleted(false);
 //        todolist.setCreatedAt(LocalDateTime.now());
 //        todolist.setUpdatedAt(LocalDateTime.now());
-        todoRepository.save(todolist);
+        todoRepository.save(todo);
     }
 
     // 조회
-    public List<Todolist> getList() {
+    public List<Todo> getList() {
         return todoRepository.findAll();
     }
 

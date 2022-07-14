@@ -11,17 +11,17 @@
 
             <form th:action="@{/todolist/create}" method="post">
                 <div class="d-flex">
-                    <input type="text" placeholder="일정을 추가해주세요" class="underline" id="todolistContent" name="todolistContent">
+                    <input type="text" placeholder="일정을 추가해주세요" class="underline" id="content" name="content">
                     <button class="btn">add</button>
                 </div>
             </form><br>
 
             <table class="table text-center">
-                <tr th:each="todolist : ${todolist}">
+                <tr th:each="todo : ${todo}">
                     <td class="d-flex">
                         <input type="checkbox">
-                        <input type="text" placeholder="일정" class="underline" th:value="${todolist.todolistContent}" disabled>
-                        <a th:href="@{/todolist/delete/{id}(id=${todolist.id})}"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
+                        <input type="text" placeholder="일정" class="underline" th:value="${todo.content}" disabled>
+                        <a th:href="@{/todolist/delete/{id}(id=${todo.id})}"><img th:src="@{/img/delete.png}" width="25px" height="25px"></a>
                     </td>
                 </tr>
             </table>

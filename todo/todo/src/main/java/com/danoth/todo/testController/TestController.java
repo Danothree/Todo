@@ -1,13 +1,11 @@
 package com.danoth.todo.testController;
 
-import com.danoth.todo.entitiy.Todolist;
+import com.danoth.todo.dto.TodoDto;
 import com.danoth.todo.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor // final이 붙은 생성자를 자동으로 생성
@@ -27,19 +25,16 @@ public class TestController {
      */
     @RequestMapping("/todolist")
     public String list(Model model) {
-        //List<Todolist> todolist = this.todoService.getList();
-        model.addAttribute("todolist",todoService.getList());
+        model.addAttribute("todo",todoService.getList());
         return "todolist";
     }
 
     /**
      * 추가
-     * @param todolistContent
-     * @return
      */
     @PostMapping("/todolist/create")
-    public String todoCreate(Todolist todolist) {
-        todoService.create(todolist);
+    public String todoCreate(TodoDto todoDto) {
+        todoService.create(TodoDto.toEntity(todoDto));
         return "redirect:/todolist"; // 주소경로에 공백도 인식하기 때문에 공백있으면 404 에러 뜬다.
     }
 
