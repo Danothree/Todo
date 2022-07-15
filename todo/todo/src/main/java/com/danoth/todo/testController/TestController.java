@@ -43,11 +43,11 @@ public class TestController {
      * @param id
      * @return
      */
-    @GetMapping("/todolist/delete/{id}")
+    @DeleteMapping("/todolist/delete/{id}")
     public String todoDelete(@PathVariable Long id) {
         todoService.delete(id);
         return "redirect:/todolist";
     }
 
-    //@GetMapping("/todolist/update/{")
+
 }

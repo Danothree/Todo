@@ -1,11 +1,13 @@
 package com.danoth.todo.service;
 
+import com.danoth.todo.dto.TodoDto;
 import com.danoth.todo.entitiy.Todo;
 import com.danoth.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
 
 @Service
@@ -34,5 +36,7 @@ public class TodoService {
     public void delete(Long id) {
         todoRepository.deleteById(id);
     }
+
+
 
 }
