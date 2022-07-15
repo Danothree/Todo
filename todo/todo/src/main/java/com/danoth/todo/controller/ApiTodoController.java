@@ -35,7 +35,7 @@ public class ApiTodoController {
 
     @PutMapping("/{todoId}")
     public ResponseEntity changeDone(@PathVariable Long todoId){
-        service.changeDone(todoId);
+        service.changeSuccess(todoId);
         return ResponseEntity.ok().build();
     }
 

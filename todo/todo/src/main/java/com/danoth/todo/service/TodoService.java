@@ -39,7 +39,7 @@ public class TodoService {
         repository.deleteById(todoId);
     }
 
-    public void changeDone(Long todoId) {
+    public void changeSuccess(Long todoId) {
         repository.findById(todoId)
                 .orElseThrow(EntityExistsException::new)
                 .changeDone();
@@ -77,7 +77,7 @@ public class TodoService {
 
     private void validateUser(Todo todo){
         if(!StringUtils.hasText(todo.getUserId())){
-            throw new InvalidUserIdException("Invalid user value");
+            throw new InvalidUserIdException("Invalid userId value");
         }
     }
 }
