@@ -9,29 +9,39 @@
         <div class="main-box">
             <h2>TO DO LIST</h2><br>
 
-<!--            <form th:action="@{/todolist/create}" method="post">-->
             <div class="d-flex">
                 <!--엔터키 이벤트는 버튼이 아니라 input 태그에 적용-->
                 <input type="text" placeholder="일정을 추가해주세요" class="underline" id="content" name="content" onkeyup="enterkey()">
                 <button type="button" class="btn" onclick="addBtn()">add</button>
             </div>
-<!--            </form><br>-->
 
             <table class="table text-center">
                 <tr th:each="todo : ${todo}">
                     <td class="d-flex">
-                      <!--  <input type="checkbox" th:onclick="'javascript:changeClass('+${todo.id}+')'" >-->
                         <input type="checkbox" th:onclick="checkBtn([[${todo.id}]])">
                         <input type="text" placeholder="일정" class="underline" th:value="${todo.content}" th:id="${todo.id}" disabled>
-                     <!--   <input type="text" placeholder="일정" class="underline" th:value="${todo.content}" th:id="'title' + ${todo.id}" disabled>-->
-                      <!--  <a th:href="@{/todolist/detail/{id}(id=${todo.id}})"><img th:src="@{/img/update.png}" width="15px" height="15px"></a>-->
+                        <!-- data-toggle="modal" id : data-target="#moreModal" ★모달 사용시 필수!!!★ -->
+                        <a id="updateBtn" data-toggle="modal"  data-target="#moreModal" th:onclick="modalBtn([[${todo.id}]])"><img th:src="@{/img/update.png}" width="15px" height="15px"></a>
                         <!-- id 찾을때 !! -->
                         <a th:onclick="deleteBtn([[${todo.id}]])"><img th:src="@{/img/delete.png}" width="15px" height="15px" ></a>
                     </td>
                 </tr>
             </table>
         </div>
-
+        <div id="moreModal" class="modal" tabindex="-1" role="dialog"  th:each="todo : ${todo}">   <!-- ★★★★★-->
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="text-primary">수정할 내용을 입력하세요!</p>
+                        <input type="text" th:id="update" class="underline" th:value="${todo.content}">  <!-- ★★★★★-->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="completeBtn" >수정</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <footer th:replace="/fragments/footer.html :: fragment-footer"></footer>
     </div>
 
@@ -49,7 +59,7 @@
 
     /* 체크박스 선택시 취소선 이벤트 */
     function checkBtn(id) {
-        //alert('click');
+        //alert('click')
         let check = document.getElementById(id).className;
         //alert(check);
         if (check === 'underline') {
@@ -64,7 +74,6 @@
     /* 추가 기능 */
     // form태그 안에 button이 있으면
     function addBtn() {
-        //alert('click');
 
         // 유효성 체크
         let content = $('#content').val().trim();
@@ -98,9 +107,6 @@
         $.ajax ({
            type : 'delete'
            ,url : url
-           , data : {
-               id : id
-            }
             , success : function (e) {
                window.location.reload();
                alert('delete success');
@@ -110,6 +116,53 @@
             }
         });
     }
+
+
+    /* 수정 기능 */
+    function updateBtn(id) {
+       //alert('click');
+       //  let content = document.getElementById('update').value; // 값 가져오기
+        console.log("updateBtyn id ====> ",id);
+        let content = $("#update").val();
+        const url = '/todolist/update/' + id;
+        $.ajax ({
+           type : 'put'
+           ,url : url
+           ,data : {
+               content : content
+            }
+            ,success : function(e) {
+               alert('update success');
+               window.location.reload();
+            }
+            , error : function(e) {
+               alert('update fail');
+            }
+        });
+    }
+
+    function modalBtn(id) {
+        // let id = 80 ,,,,,,,,    80이라는 값을 가진 id랑 그냥 string id랑 같냐.
+        let listId = id;
+        console.log(listId);
+        $("#update").val($("#"+listId).val()); // $("#id") ==> 이놈은 진짜 id가 id인 놈(div id="id")을 가져오는거고 // $("#"+id) 이거는 해당 id변수에 담겨져있는 값을 가져와서 $("#80") 이런 형식으로 해준다.
+        // 예를들어 jquery가 태그의 아이디, 클래스 혹은 그 태그 자체 (h1, span, div) 를 가져올려면 $(""); 여까진 동일.
+        // id 를 가져올려면 $("#test"); ex) <div id = " test " > 핵바보 </div>
+        // class 를 가져올려면 $(".xx");
+        // 태그 를 가져올려면 $("tag");
+
+
+
+        $("#completeBtn").click(()=>{
+
+            updateBtn(listId);
+        });
+        // let content = document.getElementById(id).value; // 값 가져오기
+
+        //alert(content);
+    }
+
 </script>
 </body>
 </html>
+

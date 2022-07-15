@@ -18,11 +18,6 @@ public class TodoService {
 
     // 추가
     public void create(Todo todo) {
-//        Todolist todolist = new Todolist();
-//        todolist.setTodolistContent(todolistContent);
-//        todolist.setTodolistCompleted(false);
-//        todolist.setCreatedAt(LocalDateTime.now());
-//        todolist.setUpdatedAt(LocalDateTime.now());
         todoRepository.save(todo);
     }
 
@@ -32,11 +27,16 @@ public class TodoService {
     }
 
     // 삭제
-    @Transactional
+    @Transactional // service단에서 걸기
     public void delete(Long id) {
         todoRepository.deleteById(id);
     }
 
-
+    @Transactional
+    public void update(Long id, String content) {
+        Todo todo = todoRepository.findById(id).orElseThrow(EntityExistsException::new);
+        todo.setContent(content);
+        todoRepository.save(todo);
+    }
 
 }
