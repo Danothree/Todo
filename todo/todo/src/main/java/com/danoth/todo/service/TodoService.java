@@ -15,7 +15,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityExistsException;
 import java.util.List;
 
-@Slf4j
+@Slf4j  
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -52,10 +52,12 @@ public class TodoService {
                 .updateTodo(todo);
     }
 
+    @Transactional(readOnly = true)
     public List<Todo> activeList(String userId) {
         return repository.findByUserIdAndSuccess(userId, false);
     }
 
+    @Transactional(readOnly = true)
     public List<Todo> completedList(String userId) {
         return repository.findByUserIdAndSuccess(userId, true);
     }
