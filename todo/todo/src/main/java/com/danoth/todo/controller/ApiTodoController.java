@@ -2,9 +2,12 @@ package com.danoth.todo.controller;
 
 import com.danoth.todo.dto.TodoDto;
 import com.danoth.todo.service.TodoService;
+import com.danoth.todo.util.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static com.danoth.todo.util.mapper.TodoMapper.INSTANCE;
 
 @RestController
 @RequestMapping("/api/todos")
@@ -14,8 +17,8 @@ public class ApiTodoController {
     private final TodoService service;
 
     @PostMapping
-    public ResponseEntity create(TodoDto todoDto){
-        service.create(TodoDto.toEntity(todoDto)
+    public ResponseEntity create(TodoDto dto){
+        service.create(INSTANCE.toEntity(dto)
                 .setUserId(temporaryUserId));
         return ResponseEntity.ok().build();
     }
@@ -27,8 +30,8 @@ public class ApiTodoController {
     }
 
     @PutMapping
-    public ResponseEntity update(TodoDto todoDto){
-        service.update(TodoDto.toEntity(todoDto)
+    public ResponseEntity update(TodoDto dto){
+        service.update(INSTANCE.toEntity(dto)
                 .setUserId(temporaryUserId));
         return ResponseEntity.ok().build();
     }
