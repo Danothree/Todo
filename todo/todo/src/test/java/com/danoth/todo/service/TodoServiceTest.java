@@ -3,6 +3,7 @@ package com.danoth.todo.service;
 import com.danoth.todo.entity.Todo;
 import com.danoth.todo.exception.InvalidUserIdException;
 import com.danoth.todo.exception.TitleException;
+import com.danoth.todo.factory.todo.TodoFactory;
 import com.danoth.todo.repository.TodoRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -43,7 +44,7 @@ class TodoServiceTest {
     @DisplayName("유저 TodoList 조회 테스트")
     void retrieveTest() {
         //given  (userId = user)
-        List<Todo> todoList = createTodoList();
+        List<Todo> todoList = TodoFactory.createTodoList();
         given(repository.findByUserId(anyString(), any())).willReturn(todoList);
 
         //when
@@ -57,7 +58,7 @@ class TodoServiceTest {
     @DisplayName("Todo 저장 테스트")
     void todoSaveTest() {
         //given
-        Todo todo = createTodo();
+        Todo todo = TodoFactory.createTodo();
         given(repository.save(todo)).willReturn(any());
 
         //when
@@ -111,7 +112,7 @@ class TodoServiceTest {
     @DisplayName("Todo 완료,미완 변경 로직 테스트")
     void changeSuccessTest() {
         //given
-        Todo todo = createTodo();
+        Todo todo = TodoFactory.createTodo();
         given(repository.findById(1L)).willReturn(Optional.of(todo));
 
         //when
@@ -126,7 +127,7 @@ class TodoServiceTest {
     @DisplayName("Todo 수정 로직 테스트")
     void updateTest() {
         //given
-        Todo todo = createTodo();
+        Todo todo = TodoFactory.createTodo();
         given(repository.findById(1L))
                 .willReturn(Optional.of(todo));
 
@@ -179,21 +180,5 @@ class TodoServiceTest {
 
         //then
         assertThat(todos.get(0).isSuccess()).isTrue();
-    }
-
-    private List<Todo> createTodoList(){
-        return Arrays.asList(Todo.builder()
-                .userId("user")
-                .success(true)
-                .title("title")
-                .build());
-    }
-
-    private Todo createTodo(){
-        return Todo.builder()
-                .userId("user")
-                .success(true)
-                .title("title")
-                .build();
     }
 }
