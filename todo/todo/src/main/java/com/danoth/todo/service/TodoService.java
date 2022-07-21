@@ -24,7 +24,7 @@ public class TodoService {
 
     @Transactional(readOnly = true)
     public List<Todo> retrieve(String userId) {
-        return repository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "modifiedDate", "success"));
+        return repository.findByUserId(userId, Sort.by(Sort.Direction.ASC, "success"));
     }
 
     public List<Todo> create(Todo todo) {

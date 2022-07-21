@@ -135,17 +135,22 @@
                     }
                 })
             }
+
+            let allCheck = function (TodoList){
+                alert("hello");
+            }
         </script>
     </th:block>
 
     <th:block layout:fragment="content" class="content">
         <div class="todo-wrapper">
             <div class="todo-title">todos</div>
-            <button class="calender_link" id="calenderLink" th:onclick="'location.href=' + '\'' + @{/} + '\''">Calendar</button>
+            <button class="calender_link" style=" color: brown; height: 2rem; cursor: pointer;"
+                    id="calenderLink" th:onclick="'location.href=' + '\'' + @{/calender} + '\''">Calendar</button>
             <br>
             <div class="todo-box">
                 <div class="todo-input-box" th:object="${TodoDto}">
-                    <button class="complete-all-btn" style="width: 5.5rem;" id="todoRegister" th:onclick="">✔</button>
+                    <button class="complete-all-btn" style="width: 5.5rem;" id="todoRegister">✔</button>
                     <input type="text"  class="todo-input"  th:field="*{title}"
                        id="title"  th:onkeypress="if( event.keyCode==13 ){createTodo();}" placeholder="해야 할 일을 입력해주세요.">
                 </div>
