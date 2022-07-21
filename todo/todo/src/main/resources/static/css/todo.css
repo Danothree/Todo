@@ -198,3 +198,9 @@ p.info {
     text-align: center;
     color: #ccc;
 }
+
+.calender_link{
+    color: brown;
+    height: 2rem;
+    cursor: pointer;
+}

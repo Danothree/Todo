@@ -87,6 +87,11 @@
                     center: 'title',
                     right: 'todolist'
                 },
+                navLinks: true,
+                navLinkDayClick: function(date, jsEvent) {
+                    console.log('day', date.toISOString());
+                    console.log('coords', jsEvent.pageX, jsEvent.pageY);
+                },
                 locale: 'ko',
                 editable: true,
                 droppable: true,
