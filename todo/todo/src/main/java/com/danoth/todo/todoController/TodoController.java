@@ -8,6 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 @RequiredArgsConstructor // final이 붙은 생성자를 자동으로 생성
 public class TodoController {
@@ -59,6 +62,18 @@ public class TodoController {
         todoService.update(id, content);
         return "redirect:/todolist";
     }
+
+    @PutMapping("/todolist/check/{id}")
+    @ResponseBody
+    public Map<String, Object> check(@PathVariable Long id, @RequestParam("isCompleted") boolean isCompleted) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("result","success");
+        todoService.update(id, isCompleted);
+
+        return result;
+    }
+
+
 
 
     /*

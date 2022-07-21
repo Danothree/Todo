@@ -28,13 +28,6 @@ public class TodoDto {
                 .build();
     }
 
-
-//    public Todo update(Todo todo) {
-//        this.content = todo.getContent();
-//        this.isCompleted = todo.isCompleted();
-//        return this;
-//    }
-
     public TodoDto update(TodoDto dto) {
         this.content = dto.getContent();
         this.isCompleted = dto.isCompleted();

@@ -36,6 +36,14 @@ public class TodoService {
     public void update(Long id, String content) {
         Todo todo = todoRepository.findById(id).orElseThrow(EntityExistsException::new);
         todo.setContent(content);
+      //  todo.setCompleted(isCompleted);
+        todoRepository.save(todo);
+    }
+
+    @Transactional
+    public void update(Long id, boolean isCompleted) {
+        Todo todo = todoRepository.findById(id).orElseThrow(EntityExistsException::new);
+        todo.setCompleted(isCompleted);
         todoRepository.save(todo);
     }
 

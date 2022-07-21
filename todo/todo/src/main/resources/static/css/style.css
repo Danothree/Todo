@@ -42,12 +42,8 @@ td:hover {
 
 .selected{
     text-decoration:line-through red;
-    border-width: 0 0 1px 0;
-    opacity: 0.4;
-    /*border-left-width:0;*/
-    /*border-right-width:0;*/
-    /*border-top-width:0;*/
-    /*border-bottom-width: 1px;*/
+    border-width: 0 0 1px 0; /* 시계방향 : 위 오 아 왼 */
+    opacity: 0.4; /* 투명도 */
 }
 .table>tbody>tr>td,
 .table>tbody>tr>th,
