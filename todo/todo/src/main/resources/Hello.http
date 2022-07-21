@@ -1,0 +1,14 @@
+POST http://localhost:10000/api/todos
+Content-Type: application/json
+
+{
+  "TodoDto": {
+    "id": "20",
+    "title": "밥먹기",
+    "success": 0
+  }
+}
+
+###
+GET http://localhost:10000/todos
+
