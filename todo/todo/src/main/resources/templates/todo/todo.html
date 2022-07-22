@@ -17,14 +17,14 @@
             window.onload = function (){
                 document.getElementById('title').addEventListener('keyup', e => {
                     if( e.key === 'Enter' ){
-                        let TodoDto = {
+                        let data = {
                             title: document.getElementById('title').value
                         }
 
                         let xhr = new XMLHttpRequest();
                         xhr.open('POST', basicUrl, true);
                         xhr.setRequestHeader('Content-type', 'application/json');
-                        xhr.send(JSON.stringify(TodoDto));
+                        xhr.send(JSON.stringify(data));
 
                         xhr.onload = () => {
                             if( xhr.status == 200 ){
@@ -39,24 +39,26 @@
 
             // Todo 삭제
             function deleteButton(todoId){
-                let x = confirm("정말 삭제하려구요?");
+                let x = confirm("Are you sure you want to delete it?");
 
                 if(x) {
-                    console.log(todoId + "게시물 삭제");
-                    $.ajax({
-                        type: "delete",
-                        url: basicUrl,
-                        data: {
-                            todoId: todoId
-                        },
-                        success: function () {
+                    console.log(todoId + "번 게시물 삭제");
+                    let data = {
+                        id: todoId
+                    }
+
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('DELETE', basicUrl, true);
+                    xhr.setRequestHeader('Content-type', 'application/json');
+                    xhr.send(JSON.stringify(data));
+
+                    xhr.onload = () => {
+                        if(xhr.status == 200){
                             console.log("delete success");
-                            location.href = "/todos"
-                        },
-                        error: function () {
-                            alert("delete error");
+                            location.reload();
                         }
-                    })
+                        console.log("Error code : " + xhr.status);
+                    }
                 }
             }
 

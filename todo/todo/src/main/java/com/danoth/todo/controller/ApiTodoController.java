@@ -1,6 +1,7 @@
 package com.danoth.todo.controller;
 
 import com.danoth.todo.dto.TodoDto;
+import com.danoth.todo.entity.Todo;
 import com.danoth.todo.service.TodoService;
 import com.danoth.todo.util.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +25,13 @@ public class ApiTodoController {
     }
 
     @DeleteMapping
-    public ResponseEntity delete(Long todoId){
-        service.delete(todoId);
+    public ResponseEntity delete(@RequestBody TodoDto dto){
+        service.delete(dto.getId());
         return ResponseEntity.ok().build();
     }
 
     @PutMapping
-    public ResponseEntity update(TodoDto dto){
+    public ResponseEntity update(@RequestBody TodoDto dto){
         service.update(INSTANCE.toEntity(dto)
                 .setUserId(temporaryUserId));
         return ResponseEntity.ok().build();
