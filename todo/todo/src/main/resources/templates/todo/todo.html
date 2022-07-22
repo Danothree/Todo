@@ -14,22 +14,25 @@
             let basicUrl = "api/todos/";
 
             // Todo 추가
-            function createTodo() {
-                let title = document.getElementById('title').value;
-                console.log("create title: " + title)
+            window.onload = function (){
+                document.getElementById('title').addEventListener('keyup', e => {
+                    if( e.key === 'Enter' ){
+                        let TodoDto = {
+                            title: document.getElementById('title').value
+                        }
 
-                $.ajax({
-                    type: "post",
-                    url: basicUrl,
-                    data: {
-                        title : title
-                    },
-                    success: function () {
-                        console.log("create title success");
-                        window.location.reload();
-                    },
-                    error: function (request,status,error) {
-                        console.log("error: " + request.responseText);
+                        let xhr = new XMLHttpRequest();
+                        xhr.open('POST', basicUrl, true);
+                        xhr.setRequestHeader('Content-type', 'application/json');
+                        xhr.send(JSON.stringify(TodoDto));
+
+                        xhr.onload = () => {
+                            if( xhr.status == 200 ){
+                                console.log("create title success");
+                                location.reload();
+                            }
+                            console.log("error: " + xhr.status);
+                        }
                     }
                 })
             }
@@ -152,9 +155,9 @@
                 <div class="todo-input-box" th:object="${TodoDto}">
                     <button class="complete-all-btn" style="width: 5.5rem;" id="todoRegister">✔</button>
                     <input type="text"  class="todo-input"  th:field="*{title}"
-                       id="title"  th:onkeypress="if( event.keyCode==13 ){createTodo();}" placeholder="해야 할 일을 입력해주세요.">
+                       id="title" placeholder="해야 할 일을 입력해주세요.">
                 </div>
-
+<!--                th:onkeypress="if( event.keyCode==13 ){createTodo();}"-->
                 <!-- List 가 없을 때 -->
                 <div th:if="${#lists.isEmpty(TodoList)}">
                 </div>

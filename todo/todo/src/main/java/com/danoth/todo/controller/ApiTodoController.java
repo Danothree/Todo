@@ -17,7 +17,7 @@ public class ApiTodoController {
     private final TodoService service;
 
     @PostMapping
-    public ResponseEntity create(TodoDto dto){
+    public ResponseEntity create(@RequestBody TodoDto dto){
         service.create(INSTANCE.toEntity(dto)
                 .setUserId(temporaryUserId));
         return ResponseEntity.ok().build();
