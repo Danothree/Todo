@@ -70,22 +70,25 @@
                         alert("글을 입력해주세요.");
                         return false;
                     }
-                    $.ajax({
-                        type: 'put',
-                        url: basicUrl,
-                        data: {
-                            title : title,
-                            id : todoId
-                        },
-                        success: function(){
+
+                    let data = {
+                        'title': title,
+                        'id': todoId
+                    }
+
+                    let xhr = new XMLHttpRequest();
+                    xhr.open('PUT', basicUrl, true);
+                    xhr.setRequestHeader("Content-type", 'application/json');
+                    xhr.send(JSON.stringify(data));
+
+                    xhr.onload = () => {
+                        if(xhr.status == 200){
                             console.log("update success");
-                            window.location.reload();
-                        },
-                        error: function(error){
-                            console.log("update failure");
-                            console.log(JSON.stringify(error));
+                            location.reload();
+                            return;
                         }
-                    })
+                        console.log("update failure");
+                    }
                 }
             }
 
@@ -113,32 +116,38 @@
             function changeDone(todoId){
                 console.log(todoId + " is done");
                 let changeUrl = basicUrl + todoId;
-                $.ajax({
-                    type: "put",
-                    url: changeUrl,
-                    success: function(){
+
+                let xhr = new XMLHttpRequest();
+                xhr.open( 'PUT', changeUrl, true );
+
+                // data 를 json 으로 보낼 때, 반드시 아래와 같은 헤더 처리를 해야함
+                xhr.setRequestHeader("Content-type", 'application/json');
+
+                // send() 를 보내야 전송이 됨
+                xhr.send();
+                xhr.onload = () => {
+                    if(xhr.status == 200){
                         console.log("change done");
-                        window.location.reload();
-                    },
-                    error: function(error){
-                        console.log("error : "+ error);
+                        location.reload();
+                        return;
                     }
-                })
+                    console.log("error");
+                }
             }
 
             // Completed Clear
             function clearTodo(){
-                $.ajax({
-                    type: 'delete',
-                    url: basicUrl + "completed",
-                    success: function(){
+                let xhr = new XMLHttpRequest();
+                xhr.open('DELETE', basicUrl + "completed", true);
+                xhr.send();
+                xhr.onload = () => {
+                    if( xhr.status == 200){
                         console.log("completed clear");
-                        window.location.reload();
-                    },
-                    error: function(error){
-                        console.log("error : " + error);
+                        location.reload();
+                        return;
                     }
-                })
+                    console.log("completed error");
+                }
             }
 
             let allCheck = function (TodoList){
