@@ -27,7 +27,7 @@
                         xhr.send(JSON.stringify(data));
 
                         xhr.onload = () => {
-                            if( xhr.status == 200 ){
+                            if( xhr.status == 201 ){
                                 console.log("create title success");
                                 location.reload();
                             }

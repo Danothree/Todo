@@ -5,6 +5,7 @@ import com.danoth.todo.entity.Todo;
 import com.danoth.todo.service.TodoService;
 import com.danoth.todo.util.mapper.TodoMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class ApiTodoController {
     public ResponseEntity create(@RequestBody TodoDto dto){
         service.create(INSTANCE.toEntity(dto)
                 .setUserId(temporaryUserId));
-        return ResponseEntity.ok().build();
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @DeleteMapping
