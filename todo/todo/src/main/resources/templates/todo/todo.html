@@ -96,7 +96,7 @@
             function changeTitle(todoId){
                 console.log("change "+ todoId);
 
-                // 기존 Span을 지운다.
+                // 기존 Span 을 지운다.
                 let span_id = 'span_' + todoId;
                 let deleteTag = document.getElementById(span_id);
                 deleteTag.remove();
@@ -168,7 +168,6 @@
                     <input type="text"  class="todo-input"  th:field="*{title}"
                        id="title" placeholder="해야 할 일을 입력해주세요.">
                 </div>
-<!--                th:onkeypress="if( event.keyCode==13 ){createTodo();}"-->
                 <!-- List 가 없을 때 -->
                 <div th:if="${#lists.isEmpty(TodoList)}">
                 </div>
