@@ -1,5 +1,6 @@
 package com.danoth.todo.controller;
 
+import com.danoth.todo.aop.annotation.Timer;
 import com.danoth.todo.dto.TodoDto;
 import com.danoth.todo.service.TodoService;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Timer
 @Controller
 @RequestMapping("/todos")
 @RequiredArgsConstructor

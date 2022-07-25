@@ -20,6 +20,9 @@ public class ControllerLogAop {
     @Pointcut("execution(* com.danoth.todo.controller..*.*(..))")
     private void cut(){}
 
+    @Pointcut("@annotation(com.danoth.todo.aop.annotation.Timer)")
+    private void enableTimer() {}
+
     @Before("cut()")
     public void beforeParameterLog(JoinPoint joinPoint){
         // 메서드 정보
@@ -36,6 +39,7 @@ public class ControllerLogAop {
             log.info("parameter type = {} ", arg.getClass().getSimpleName());
             log.info("parameter value = {} ", arg);
         }
+        log.info("============== end =================");
     }
 
     // PointCut 이후
@@ -47,6 +51,7 @@ public class ControllerLogAop {
 
         log.info("return type = {} ", returnObj.getClass().getSimpleName());
         log.info("return value = {} ", returnObj);
+        log.info("============== end =================");
     }
 
     private Method getMethod(JoinPoint joinPoint){
