@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Data
+@Getter
 public class ListTable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +27,9 @@ public class ListTable {
         this.completeCheck = false;
     }
 
-    public ListTable createTable(ListTable listTable){
-        this.userId = listTable.getUserId();
-        this.content = listTable.getContent();
+    public ListTable createTable(ListTableDTO listTableDTO){
+        this.userId = listTableDTO.getUserId();
+        this.content = listTableDTO.getContent();
         return this;
     }
 }
