@@ -4,9 +4,12 @@ import com.danoth.todo.dto.ListTableDTO;
 import com.danoth.todo.model.ListTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface ListTableRepository extends JpaRepository<ListTable, Long> {
 
     void save(ListTableDTO listTableDTO);
 
     void deleteByUserIdAndContent(String userId,String content);
+
 }

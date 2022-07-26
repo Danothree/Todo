@@ -17,9 +17,7 @@ public class TodoController {
     private final ListTableRepository listTableRepository;
 
     @GetMapping
-    public String todoList(Model model){
-        model.addAttribute("listTableDTO",new ListTableDTO());
-        model.addAttribute("listTable",listTableRepository.findAll());
+    public String todoList(){
         return "index";
     }
 

@@ -23,6 +23,7 @@ public class ListTableService {
         listTableRepository.save(listTable);
     }
 
+
     public List<ListTableDTO> getList(){
         List<ListTable> listTableList = listTableRepository.findAll();
         List<ListTableDTO> listTableDTOList = new ArrayList<>();

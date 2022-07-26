@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -15,9 +16,15 @@ import java.util.Map;
 public class RestTodoController {
 
     private final ListTableService listTableService;
+    private final ListTableRepository listTableRepository;
 
-    @PostMapping
-    public void saveTodoList(@RequestBody Map<String,Object> param){
+    @GetMapping("/toDo")
+    public List<ListTableDTO> getList() {
+        return listTableService.getList();
+    }
+
+    @PostMapping("/toDo")
+    public void saveTodoList(@RequestBody Map<String,Object> param) {
         ListTableDTO listTableDTO = new ListTableDTO();
         listTableDTO.setUserId((String) param.get("userId"));
         listTableDTO.setContent((String) param.get("content"));

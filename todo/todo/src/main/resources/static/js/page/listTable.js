@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded',function(){
-
+    getList();
 });
 window.onload = function(){
     // 클릭 이벤트
@@ -30,7 +30,7 @@ window.onload = function(){
 function getList() {
     const xhr = new XMLHttpRequest;
 
-    xhr.open('GET', '', true);
+    xhr.open('GET', '/toDo', true);
     xhr.send();
 
     xhr.onload = function () {
@@ -38,7 +38,14 @@ function getList() {
             console.log('통신 완료');
             if(xhr.status === 200) {
                 console.log(xhr.response);
-                // document.getElementsByClassName()
+                let response = xhr.response;
+                console.log(response.content);
+                for (let i = 0; i < response.length; i++) {
+                    console.log(response[i].content);
+                    console.log(response[i].userId);
+                    document.getElementById('contentList').value = response[i].content;
+                }
+                document.getElementById('contentList').value = xhr.response.content.value;
             }
         }
     };
@@ -47,7 +54,7 @@ function getList() {
 function saveList(obj) {
     const xhr = new XMLHttpRequest;
 
-    xhr.open('POST', '', true);
+    xhr.open('POST', '/toDo', true);
     xhr.setRequestHeader('Content-type', 'application/json');
     console.log(obj);
     xhr.send(JSON.stringify(obj));
