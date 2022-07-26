@@ -4,7 +4,7 @@
 <th:block layout:fragment="headFragment" th:include="@{fragments/head}"></th:block>
 <th:block layout:fragment="headerFragment" th:include="@{fragments/header}"></th:block>
 <th:block layout:fragment="content">
-    <div>
+    <div class="sectionBox">
         <div class="main-box">
             <h2>TO DO LIST</h2><br>
 
@@ -85,8 +85,8 @@
         /* 체크박스 선택시 취소선 이벤트 */
         function checkBtn(id) {
             //alert('click')
-          //  let isCompleted_id = 'isCompleted_' + id;
-           // alert(isCompleted_id);
+          //let isCompleted_id = 'isCompleted_' + id
+          //alert(isCompleted_id);
            let isCompleted_id = document.getElementById(id).className;
            // let completedName = 'isCompleted_' + id
           // alert(isCompleted_id);
