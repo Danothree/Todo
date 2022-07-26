@@ -9,11 +9,11 @@ import lombok.*;
 public class ListTableDTO {
     private String userId;
     private String content;
-    private boolean completeCheck;
+    private String completeCheck;
 
     public ListTableDTO(ListTable listTable){
         this.userId = listTable.getUserId();
         this.content = listTable.getContent();
-        this.completeCheck = listTable.isCompleteCheck();
+        this.completeCheck = listTable.getCompleteCheck();
     }
 }

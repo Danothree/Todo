@@ -21,16 +21,12 @@ public class TodoController {
         return "index";
     }
 
-    @PutMapping(value = "/{table_id}")
-    public String updateTodoList(@PathVariable("table_id") Long table_id,@RequestBody ListTable listTable){
-        ListTable findListTable = listTableRepository.findById(table_id).get();
-        listTableRepository.save(findListTable);
-        return "redirect:/";
-    }
+//    @PatchMapping(value = "/toDo/{content}")
+//    public String updateTodoList(@PathVariable String content){
+//        ListTable findListTable = listTableRepository.findById(table_id).get();
+//        listTableRepository.save(findListTable);
+//        return "redirect:/";
+//    }
 
-    @DeleteMapping("/{id}")
-    public void deleleTodoList(@PathVariable Long id){
-        listTableRepository.deleteById(id);
-    }
 
 }

@@ -25,15 +25,16 @@ public class ListTable {
     @NotNull
     private String content;
 
-    private boolean completeCheck;
+    private String completeCheck;
 
     @PrePersist
     public void prePersist(){
-        this.completeCheck = false;
+        this.completeCheck = "false";
     }
 
     public ListTable(ListTableDTO listTableDTO){
         this.userId = listTableDTO.getUserId();
         this.content = listTableDTO.getContent();
+        this.completeCheck = listTableDTO.getCompleteCheck();
     }
 }

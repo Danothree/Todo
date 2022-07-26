@@ -24,11 +24,13 @@ public class RestTodoController {
     }
 
     @PostMapping("/toDo")
-    public void saveTodoList(@RequestBody Map<String,Object> param) {
-        ListTableDTO listTableDTO = new ListTableDTO();
-        listTableDTO.setUserId((String) param.get("userId"));
-        listTableDTO.setContent((String) param.get("content"));
+    public void saveTodoList(@RequestBody ListTableDTO listTableDTO) {
         listTableService.save(listTableDTO);
+    }
+
+    @DeleteMapping("/toDo/{id}")
+    public void deleteTodoList(@PathVariable Long id){
+        listTableRepository.deleteById(id);
     }
 
 }

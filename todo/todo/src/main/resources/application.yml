@@ -3,8 +3,8 @@ spring:
     url: jdbc:mysql://localhost:3306/todo?serverTimezone=Asia/Seoul
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: danu1234
-#회사는 비번 danu1234 포트 3306 놋북은 root 포트 4406
+    password: root
+#회사는 비번 danu1234 북은 root
   jpa:
     defer-datasource-initialization: true
     hibernate:
