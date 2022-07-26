@@ -1,23 +1,28 @@
 package com.danoth.todo.model;
 
 import com.danoth.todo.dto.ListTableDTO;
+import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ListTable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotNull
     private String userId;
 
-    @Column(nullable = false)
+    @NotNull
     private String content;
 
     private boolean completeCheck;
@@ -27,9 +32,8 @@ public class ListTable {
         this.completeCheck = false;
     }
 
-    public ListTable createTable(ListTableDTO listTableDTO){
+    public ListTable(ListTableDTO listTableDTO){
         this.userId = listTableDTO.getUserId();
         this.content = listTableDTO.getContent();
-        return this;
     }
 }
