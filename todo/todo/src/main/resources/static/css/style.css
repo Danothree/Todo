@@ -12,7 +12,7 @@ body {
 .footer-logo {
     width: 500px;
 }
-.main-section {
+.main-box {
     height: 500px;
     width: 1000px;
 }
@@ -23,8 +23,8 @@ body {
 
 .main-box {
     width: 500px;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     padding: 30px;
     border: 1px solid #e2e2e2;
 }
@@ -56,8 +56,12 @@ td:hover {
     vertical-align: top;
     border-top: none;
 }
-
 .container {
     margin: 0 0 0 auto;
     padding: 0px;
+}
+
+#bottom-nav {
+    width: 500px;
+    margin-bottom: 30px;
 }

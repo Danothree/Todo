@@ -1,17 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"  xmlns:th="http://thymeleaf.org">
-<head th:replace="fragments/head.html :: fragment-head">
-</head>
-<body>
-    <div class="container">
-        <header th:replace="fragments/header.html :: fragment-header"></header>
-
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/default_layout">
+<th:block layout:fragment="headFragment" th:include="@{fragments/head}"></th:block>
+<th:block layout:fragment="headerFragment" th:include="@{fragments/header}"></th:block>
+<th:block layout:fragment="content">
+    <div>
         <div class="main-box">
             <h2>TO DO LIST</h2><br>
 
             <div class="d-flex">
                 <!--엔터키 이벤트는 버튼이 아니라 input 태그에 적용-->
-                <input type="text" placeholder="일정을 추가해주세요" class="underline" id="content" name="content" onkeyup="enterkey()">
+                <input type="text" placeholder="일정을 추가해주세요" class="underline" id="content" name="content">
                 <button type="button" class="btn" onclick="addBtn()">add</button>
             </div>
 
@@ -21,30 +20,43 @@
                         <!--<li th:if="${pageMaker.isPrev()}">-->
                         <!--th:attr="checked=${todo.isCompleted == '0' ? 'true' : 'false'}"-->
 
-                        <span th:if="${todo.isCompleted}">  <!-- on 버튼이 눌렸을 때 -->
-                            <input type="checkbox" th:onclick="checkBtn([[${todo.id}]])" id="isCompleted" name="isCompleted" checked="checked">
-                            <input type="text" placeholder="일정" class="selected"  th:value="${todo.content}" th:id="${todo.id}" disabled>
+                        <span th:if="${todo.isCompleted}">  <!-- 체크박스 버튼이 눌렸을 때 -->
+                            <input type="checkbox" th:onclick="checkBtn([[${todo.id}]])" th:id="'isCompleted_'+${todo.id}"
+                                   name="isCompleted" checked="checked">                               <!-- 아이디가 중복일 때 !!!!-->
+                            <input type="text" placeholder="일정" class="selected" th:value="${todo.content}"
+                                   th:id="${todo.id}" disabled>
                         </span>
 
-                        <span th:unless="${todo.isCompleted}">  <!-- off 버튼이 안 눌렸을 때 -->
-                            <input type="checkbox" th:onclick="checkBtn([[${todo.id}]])" id="isCompleted" name="isCompleted" >
-                            <input type="text" placeholder="일정" class="underline" th:value="${todo.content}" th:id="${todo.id}" disabled>
+                        <span th:unless="${todo.isCompleted}">  <!-- 체크박스 버튼이 안 눌렸을 때 -->
+                            <input type="checkbox" th:onclick="checkBtn([[${todo.id}]])" th:id="'isCompleted_'+${todo.id}"
+                                   name="isCompleted">
+                            <input type="text" placeholder="일정" class="underline" th:value="${todo.content}"
+                                   th:id="${todo.id}" disabled>
                        </span>
 
-                        <!-- data-toggle="modal" id : data-target="#moreModal" ★모달 사용시 필수!!!★ -->
-                        <a id="updateBtn" data-toggle="modal"  data-target="#moreModal" th:onclick="modalBtn([[${todo.id}]])"><img th:src="@{/img/update.png}" width="15px" height="15px"></a>
                         <!-- id 찾을때 !! -->
-                        <a th:onclick="deleteBtn([[${todo.id}]])"><img th:src="@{/img/delete.png}" width="15px" height="15px"></a>
+                        <a th:onclick="deleteBtn([[${todo.id}]])"><img th:src="@{/img/delete.png}" width="15px"
+                                                                       height="15px"></a>
+                        <!-- data-toggle="modal" id : data-target="#moreModal" ★모달 사용시 필수!!!★ -->
+                        <a id="updateBtn" data-toggle="modal" data-target="#moreModal"
+                           th:onclick="modalBtn([[${todo.id}]])"><img th:src="@{/img/update.png}" width="15px"
+                                                                      height="15px"></a>
+
                     </td>
                 </tr>
             </table>
         </div>
-        <div id="moreModal" class="modal" tabindex="-1" role="dialog"  th:each="todo : ${todo}">   <!-- ★★★★★-->
+
+        <div id="bottom-nav">
+            <a href="calendar"><img th:src="@{img/calendar.png}" width="50px" height="50px"></a>
+        </div>
+
+        <div id="moreModal" class="modal" tabindex="-1" role="dialog" th:each="todo : ${todo}">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
                         <p class="text-primary">수정할 내용을 입력하세요!</p>
-                        <input type="text" th:id="update" class="underline" th:value="${todo.content}">  <!-- ★★★★★-->
+                        <input type="text" th:id="update" class="underline" th:value="${todo.content}">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="completeBtn">수정</button>
@@ -53,147 +65,151 @@
                 </div>
             </div>
         </div>
-        <footer th:replace="fragments/footer.html :: fragment-footer"></footer>
+
+
     </div>
 
-<script type="text/javascript" >
+    <script type="text/javascript">
+        /* 포커스 기능 */
+        $('#content').focus();
 
-
-    /* 포커스 기능 */
-    $('#content').focus();
-
-    /* 엔터키 작동 기능 */
-    function enterkey() {
-        if (window.event.keyCode == 13) {
-            addBtn();
-        }
-    }
-
-    /* 체크박스 선택시 취소선 이벤트 */
-    function checkBtn(id) {
-        //alert('click')
-        let check = document.getElementById(id).className;
-        let completedName = 'isCompleted_'
-        //alert(check);
-        let isCompleted = $("input[name='isCompleted']").is(':checked');
-        //alert(isCompleted);
-        if (check === 'underline') {
-            document.getElementById(id).className = 'selected';
-            isCompleted = '1';
-        } else {
-            document.getElementById(id).className = 'underline';
-            isCompleted = '0';
-        }
-
-        const url = '/todolist/check/' + id;
-
-        $.ajax({
-           type : 'put'
-           ,url : url
-            ,data : {
-                isCompleted : isCompleted
-            }
-            ,success : function(e) {
-               window.location.reload();
-               alert('check success');
-            }
-            ,error : function(e) {
-               alert('check fail');
-            }
+        /* 엔터키 작동 기능 */
+        $(document).ready(function (e) {
+            $('#content').keydown(function (key) {
+                if (key.keyCode == 13) {
+                    addBtn();
+                }
+            });
         });
-    }
 
-    /* 추가 기능 */
-    // form태그 안에 button이 있으면
-    function addBtn() {
+        /* 체크박스 선택시 취소선 이벤트 */
+        function checkBtn(id) {
+            //alert('click')
+          //  let isCompleted_id = 'isCompleted_' + id;
+           // alert(isCompleted_id);
+           let isCompleted_id = document.getElementById(id).className;
+           // let completedName = 'isCompleted_' + id
+          // alert(isCompleted_id);
+            let isCompleted = $("input[name='isCompleted']").is(':checked');
+            //alert(isCompleted);
+            if (isCompleted_id === 'underline') {
+                document.getElementById(id).className = 'selected';
+                isCompleted = '1';
+            } else {
+                document.getElementById(id).className = 'underline';
+                isCompleted = '0';
+            }
 
-        // 유효성 체크
-        let content = $('#content').val().trim();
-        if (content == '') {
-            alert('일정을 입력해주세요!!');
-            return; /* 종료 */
+            const url = '/todolist/check/' + id;
+
+            $.ajax({
+                type: 'put'
+                , url: url
+                , data: {
+                    isCompleted: isCompleted
+                }
+                , success: function (e) {
+                    window.location.reload();
+                    alert('check success');
+                }
+                , error: function (e) {
+                    alert('check fail');
+                }
+            });
         }
 
-        const url = '/todolist/create';
+        /* 추가 기능 */
+        // form태그 안에 button이 있으면
+        function addBtn() {
 
-        $.ajax({
-            type : 'post'
-            , url : url
-            , data : {
-                content : content
+            // 유효성 체크
+            let content = $('#content').val().trim();
+            if (content == '') {
+                alert('일정을 입력해주세요!!');
+                return; /* 종료 */
             }
-            , success : function(){
-                window.location.reload();
-                alert("create success");
-            }
-            , error : function(){
-                alert("create failure");
-            }
-        });
-    }
 
-    /* 삭제 기능 */
-    function deleteBtn(id) { // 파라미터로 받아온 id를 넣어준다.
-        //alert(id);
-        const url = '/todolist/delete/' + id;
-        $.ajax ({
-           type : 'delete'
-           ,url : url
-            , success : function (e) {
-               window.location.reload();
-               alert('delete success');
-            }
-            , error : function (e) {
-               alert('delete fail');
-            }
-        });
-    }
+            const url = '/todolist/create';
+
+            $.ajax({
+                type: 'post'
+                , url: url
+                , data: {
+                    content: content
+                }
+                , success: function () {
+                    window.location.reload();
+                    alert("create success");
+                }
+                , error: function () {
+                    alert("create failure");
+                }
+            });
+        }
+
+        /* 삭제 기능 */
+        function deleteBtn(id) { // 파라미터로 받아온 id를 넣어준다.
+            //alert(id);
+            const url = '/todolist/delete/' + id;
+            $.ajax({
+                type: 'delete'
+                , url: url
+                , success: function (e) {
+                    window.location.reload();
+                    alert('delete success');
+                }
+                , error: function (e) {
+                    alert('delete fail');
+                }
+            });
+        }
 
 
-    /* 수정 기능 */
-    function updateBtn(id) {
-       //alert('click');
-       //  let content = document.getElementById('update').value; // 값 가져오기
-        console.log("updateBtn id ====> ",id);
-        let content = $("#update").val();
+        /* 수정 기능 */
+        function updateBtn(id) {
+            //alert('click');
+            //  let content = document.getElementById('update').value; // 값 가져오기
+            console.log("updateBtn id ====> ", id);
+            let content = $("#update").val();
 
 
-        const url = '/todolist/update/' + id;
-        $.ajax ({
-           type : 'put'
-           ,url : url
-           ,data : {
-               content : content
+            const url = '/todolist/update/' + id;
+            $.ajax({
+                type: 'put'
+                , url: url
+                , data: {
+                    content: content
 
-            }
-            ,success : function(e) {
-               alert('update success');
-               window.location.reload();
-            }
-            , error : function(e) {
-               alert('update fail');
-            }
-        });
-    }
+                }
+                , success: function (e) {
+                    alert('update success');
+                    window.location.reload();
+                }
+                , error: function (e) {
+                    alert('update fail');
+                }
+            });
+        }
 
-    function modalBtn(id) {
-        // let id = 80 ,,,,,,,,    80이라는 값을 가진 id랑 그냥 string id랑 같냐.
-        let listId = id;
-        console.log(listId);
-        $("#update").val($("#" + listId).val()); // $("#id") ==> 이놈은 진짜 id가 id인 놈(div id="id")을 가져오는거고 // $("#"+id) 이거는 해당 id변수에 담겨져있는 값을 가져와서 $("#80") 이런 형식으로 해준다.
-        // 예를들어 jquery가 태그의 아이디, 클래스 혹은 그 태그 자체 (h1, span, div) 를 가져올려면 $(""); 여까진 동일.
-        // id 를 가져올려면 $("#test"); ex) <div id = " test " > 핵바보 </div>
-        // class 를 가져올려면 $(".xx");
-        // 태그 를 가져올려면 $("tag");
+        function modalBtn(id) {
+            // let id = 80 ,,,,,,,,    80이라는 값을 가진 id랑 그냥 string id랑 같냐.
+            let listId = id;
+            console.log(listId);
+            $("#update").val($("#" + listId).val()); // $("#id") ==> 이놈은 진짜 id가 id인 놈(div id="id")을 가져오는거고 // $("#"+id) 이거는 해당 id변수에 담겨져있는 값을 가져와서 $("#80") 이런 형식으로 해준다.
+            // 예를들어 jquery가 태그의 아이디, 클래스 혹은 그 태그 자체 (h1, span, div) 를 가져올려면 $(""); 여까진 동일.
+            // id 를 가져올려면 $("#test"); ex) <div id = " test " > 핵바보 </div>
+            // class 를 가져올려면 $(".xx");
+            // 태그 를 가져올려면 $("tag");
 
-        $("#completeBtn").click(()=>{
-            updateBtn(listId);
-        });
+            $("#completeBtn").click(() => {
+                updateBtn(listId);
+            });
 
-        // let content = document.getElementById(id).value; // 값 가져오기
-        //alert(content);
-    }
-
-</script>
-</body>
+            // let content = document.getElementById(id).value; // 값 가져오기
+            //alert(content);
+        }
+    </script>
+</th:block>
+<th:block layout:fragment="footerFragment" th:include="@{fragments/footer}"></th:block>
+<!--</body>-->
 </html>

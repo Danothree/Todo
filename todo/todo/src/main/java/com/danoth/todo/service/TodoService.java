@@ -32,16 +32,18 @@ public class TodoService {
         todoRepository.deleteById(id);
     }
 
+    // 내용 수정시
     @Transactional
-    public void update(Long id, String content) {
+    public void updateContent(Long id, String content) {
         Todo todo = todoRepository.findById(id).orElseThrow(EntityExistsException::new);
         todo.setContent(content);
       //  todo.setCompleted(isCompleted);
         todoRepository.save(todo);
     }
 
+    // 체크박스 변경시
     @Transactional
-    public void update(Long id, boolean isCompleted) {
+    public void updateCheck(Long id, boolean isCompleted) {
         Todo todo = todoRepository.findById(id).orElseThrow(EntityExistsException::new);
         todo.setCompleted(isCompleted);
         todoRepository.save(todo);

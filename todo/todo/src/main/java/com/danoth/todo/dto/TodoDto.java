@@ -20,7 +20,7 @@ public class TodoDto {
         this.isCompleted = todo.isCompleted();
     }
 
-    public static Todo toEntity(TodoDto dto) {
+    public static Todo toEntity(TodoDto dto) { // dto를 넣어서 entitiy로 생성해준다.
         return Todo.builder()
                 .id(dto.getId())
                 .content(dto.getContent())
@@ -28,9 +28,5 @@ public class TodoDto {
                 .build();
     }
 
-    public TodoDto update(TodoDto dto) {
-        this.content = dto.getContent();
-        this.isCompleted = dto.isCompleted();
-        return this;
-    }
+
 }

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/default_layout">
+<head>
+    <meta charset='utf-8'/>
+    <link th:href="@{/lib/main.css}" rel="stylesheet"/>
+    <script th:src="@{/lib/main.js}"></script>
+    <script th:src="@{/lib/locales-all.js}"></script>
+    <style>
+        #calendar {
+            width: 650px;
+            margin: 20px auto;
+        }
+
+        .footer-nav {
+            width: 650px;
+            margin: 20px auto;
+        }
+
+    </style>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                locale: "ko",
+                googleCalendarApiKey: 'AIzaSyBwo4oOfea5TLSuNzZdQnqmJmqusEf6Di0',
+                events: {
+                    googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com'
+                    , className: 'gcal-event'
+                }
+            });
+            calendar.render();
+        });
+
+    </script>
+</head>
+<body>
+<div class="container">
+    <div id='calendar'></div>
+    <div class="footer-nav">
+        <a href="todolist"><img th:src="@{img/write.png}" width="40px" height="40px"></a>
+    </div>
+</div>
+</body>
+</html>

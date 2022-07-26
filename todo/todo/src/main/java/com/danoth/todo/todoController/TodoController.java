@@ -17,10 +17,10 @@ public class TodoController {
 
     private final TodoService todoService;
 
-    @RequestMapping("/")
+/*    @RequestMapping("/")
     public String root() {
         return "redirect:todolist";
-    }
+    }*/
 
     /**
      * 조회
@@ -28,9 +28,14 @@ public class TodoController {
      * @return
      */
     @RequestMapping("/todolist")
-    public String list(Model model) {
+    public String list(Model model) { // controller에서 생선한 데이터를 담아서 view에 전달할 때 사용하는 객체(키,밸류)
         model.addAttribute("todo",todoService.getList());
         return "todolist";
+    }
+
+    @RequestMapping("/calendar")
+    public String calendar() {
+        return "calendar";
     }
 
     /**
@@ -58,17 +63,19 @@ public class TodoController {
     * 수정
     * */
     @PutMapping("/todolist/update/{id}")
-    public String todoUpdate(@PathVariable Long id, @RequestParam String content) {
-        todoService.update(id, content);
+    public String todoUpdateContent(@PathVariable Long id, @RequestParam String content) {
+        todoService.updateContent(id, content);
         return "redirect:/todolist";
     }
 
+
+
     @PutMapping("/todolist/check/{id}")
     @ResponseBody
-    public Map<String, Object> check(@PathVariable Long id, @RequestParam("isCompleted") boolean isCompleted) {
+    public Map<String, Object> todoUpdateCheck(@PathVariable Long id, @RequestParam("isCompleted") boolean isCompleted) {
         Map<String, Object> result = new HashMap<>();
         result.put("result","success");
-        todoService.update(id, isCompleted);
+        todoService.updateCheck(id, isCompleted);
 
         return result;
     }
