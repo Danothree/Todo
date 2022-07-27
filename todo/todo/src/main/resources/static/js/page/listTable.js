@@ -1,43 +1,43 @@
-document.addEventListener('DOMContentLoaded',function(){
-
-});
 window.onload = function(){
-    getList();
-    // 클릭 이벤트
-    document.getElementById('addBtn').addEventListener('click',() => {
-        const userId = document.getElementById('userId').value;
-        const content = document.getElementById('content').value;
-
-        //input null check
-        if(!userId) {
-            alert('아이디를 입력해주세요');
-            return false;
-        }else if(!content) {
-            alert('내용을 입력해주세요');
-            return false;
-        }
-        console.log(userId);
-        console.log(content);
-        let obj = {
-            "userId" : userId,
-            "content" : content
-        }
-        saveList(obj);
-        location.reload();
-    });
-
-
+    main.init();
 }
 
-//삭제이벤트
-document.querySelector('.delBtn').addEventListener('click', () => {
-    let form = new FormData(this.document.querySelector('.formList'));
-    let obj = JSON.stringify(serialize(form));
-    console.log(form);
-    console.log(obj);
-    // deleteTable(obj);
+const main = {
+    init : () => {
+        getList();
+        // 클릭 이벤트
+        document.getElementById('addBtn').addEventListener('click',() => {
+            const userId = document.getElementById('userId').value;
+            const content = document.getElementById('content').value;
+
+            //input null check
+            if(!userId) {
+                alert('아이디를 입력해주세요');
+                return false;
+            }else if(!content) {
+                alert('내용을 입력해주세요');
+                return false;
+            }
+            console.log(userId);
+            console.log(content);
+            let obj = {
+                "userId" : userId,
+                "content" : content
+            }
+            saveList(obj);
+            location.reload();
+        });
+    },
+}
+//삭제
+function todoDel(userId,content) {
+    let obj = {
+        "userId" : userId,
+        "content": content
+    }
+    deleteTable(obj);
     location.reload();
-})
+}
 
 function getList() {
     const xhr = new XMLHttpRequest;
@@ -64,13 +64,11 @@ function getList() {
                         '<input class="form-check-input me-2" class="contentListChk" type="checkbox" value="'+response[i].completeCheck+'" aria-label="..."/>' +
                         '<span class="contentList" name="contentList" style="color: #1b1e21" value="'+response[i].content+'">'+response[i].content+'</span>' +
                         '</li>' +
-                        '<button type="button" class="btn btn-info ms-2 delBtn">Delete</button>' +
+                        '<button type="button" class="btn btn-info ms-2 delBtn" onclick="todoDel('+response[i].userId+','+response[i].content+');">Delete</button>' +
                         '</form>' +
                         '</ul>'
                 }
                 inSpan.innerHTML = tag;
-                // document.getElementById('contentList').value = xhr.response.content.value;
-
             }
         }
     };
@@ -93,26 +91,13 @@ function saveList(obj) {
 function deleteTable(obj) {
     const xhr = new XMLHttpRequest();
 
-    xhr.open('DELETE', '/toDo/')
-}
+    xhr.open('DELETE', '/toDo', true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send(obj);
 
-function serialize (rawData) {
-
-    let rtnData = {};
-    for (let [key, value] of rawData) {
-        let sel = document.querySelectorAll("[name=" + key + "]");
-
-        // Array Values
-        if (sel.length > 1) {
-            if (rtnData[key] === undefined) {
-                rtnData[key] = [];
-            }
-            rtnData[key].push(value);
-        }
-        // Other
-        else {
-            rtnData[key] = value;
+    xhr.onload = function () {
+        if(xhr.status === 200) {
+            console.log('삭제 완료');
         }
     }
-    return rtnData;
 }

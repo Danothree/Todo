@@ -28,9 +28,9 @@ public class RestTodoController {
         listTableService.save(listTableDTO);
     }
 
-    @DeleteMapping("/toDo/{id}")
-    public void deleteTodoList(@PathVariable Long id){
-        listTableRepository.deleteById(id);
+    @DeleteMapping("/toDo")
+    public void deleteTodoList(ListTableDTO listTableDTO){
+        listTableRepository.deleteByUserIdAndContent(listTableDTO.getUserId(),listTableDTO.getContent());
     }
 
 }
