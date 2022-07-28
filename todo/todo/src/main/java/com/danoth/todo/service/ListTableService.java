@@ -1,7 +1,7 @@
 package com.danoth.todo.service;
 
 import com.danoth.todo.dto.ListTableDTO;
-import com.danoth.todo.model.ListTable;
+import com.danoth.todo.domain.ListTable;
 import com.danoth.todo.repository.ListTableRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

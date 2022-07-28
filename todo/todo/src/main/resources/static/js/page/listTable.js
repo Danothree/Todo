@@ -27,22 +27,39 @@ const main = {
             saveList(obj);
             location.reload();
         });
-    },
+        // const checkbox = document.querySelector('.contentListChk');
+        // const text = document.querySelector('.contentList');
+        //
+        // checkbox.addEventListener('change', (event) => {
+        //     if(event.currentTarget.checked) {
+        //         text.style.textDecoration = 'line-through';
+        //     } else {
+        //         text.style.textDecoration = 'none';
+        //     }
+        // });
+    }
 }
 //삭제
-function todoDel(userId,content) {
-    let obj = {
-        "userId" : userId,
-        "content": content
+function todoDel(id) {
+    deleteTable(id);
+    location.reload();
+}
+//수정
+function todoModi(id) {
+    const content = document.querySelector('.contentList');
+    const modify = prompt('할일 수정',content.innerHTML);
+    content.innerHTML = modify;
+    obj = {
+        'content' : modify
     }
-    deleteTable(obj);
+    modifyTable(id,obj);
     location.reload();
 }
 
 function getList() {
     const xhr = new XMLHttpRequest;
 
-    xhr.open('GET', '/toDo', true);
+    xhr.open('GET', '/todo', true);
     xhr.send();
 
     xhr.onload = function () {
@@ -60,11 +77,13 @@ function getList() {
                         '<form class="d-flex justify-content-center align-items-center mb-4 formList">' +
                         '<li class="list-group-item d-flex align-items-center border-0 rounded"' +
                         'style="background-color: #f4f6f7;">' +
+                        '<input type="hidden" class="id" name="id" value="'+response[i].id+'"/>' +
                         '<input type="hidden" class="userId" name="userId" value="'+response[i].userId+'"/>' +
                         '<input class="form-check-input me-2" class="contentListChk" type="checkbox" value="'+response[i].completeCheck+'" aria-label="..."/>' +
-                        '<span class="contentList" name="contentList" style="color: #1b1e21" value="'+response[i].content+'">'+response[i].content+'</span>' +
+                        '<span class="contentList" name="contentList" style="color: #1b1e21">'+response[i].content+'</span>' +
                         '</li>' +
-                        '<button type="button" class="btn btn-info ms-2 delBtn" onclick="todoDel('+response[i].userId+','+response[i].content+');">Delete</button>' +
+                        '<button type="button" class="btn btn-info ms-2 delBtn" onclick="todoModi('+response[i].id+');">수정</button>' +
+                        '<button type="button" class="btn btn-info ms-2 delBtn" onclick="todoDel('+response[i].id+');">삭제</button>' +
                         '</form>' +
                         '</ul>'
                 }
@@ -73,11 +92,16 @@ function getList() {
         }
     };
 }
+// function correctionFrame(e, id) {
+//     const todoSpan = document.createElement('span');
+//     todoSpan.classList.add('contentList');
+//     todoSpan.addEventListener()
+// }
 
 function saveList(obj) {
     const xhr = new XMLHttpRequest;
 
-    xhr.open('POST', '/toDo', true);
+    xhr.open('POST', '/todo', true);
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.send(JSON.stringify(obj));
 
@@ -88,16 +112,29 @@ function saveList(obj) {
     }
 }
 
-function deleteTable(obj) {
+function deleteTable(id) {
     const xhr = new XMLHttpRequest();
 
-    xhr.open('DELETE', '/toDo', true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send(obj);
+    xhr.open('DELETE', '/todo/'+id, true);
+    xhr.send();
 
     xhr.onload = function () {
         if(xhr.status === 200) {
             console.log('삭제 완료');
+        }
+    }
+}
+
+function modifyTable(id,obj) {
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('PATCH', '/todo/'+id, true);
+    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+    xhr.send(obj);
+
+    xhr.onload = function () {
+        if(xhr.status === 200) {
+            console.log('수정 완료');
         }
     }
 }

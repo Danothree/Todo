@@ -1,20 +1,19 @@
-package com.danoth.todo.model;
+package com.danoth.todo.domain;
 
 import com.danoth.todo.dto.ListTableDTO;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ListTable {
+public class ListTable extends BaseTimeEntity{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,6 +32,18 @@ public class ListTable {
     }
 
     public ListTable(ListTableDTO listTableDTO){
+        this.userId = listTableDTO.getUserId();
+        this.content = listTableDTO.getContent();
+        this.completeCheck = listTableDTO.getCompleteCheck();
+    }
+
+    public void modifyContent(String content) {
+        this.content = content;
+    }
+
+    @Builder
+    public void setListTable(ListTableDTO listTableDTO) {
+        this.id = listTableDTO.getId();
         this.userId = listTableDTO.getUserId();
         this.content = listTableDTO.getContent();
         this.completeCheck = listTableDTO.getCompleteCheck();
