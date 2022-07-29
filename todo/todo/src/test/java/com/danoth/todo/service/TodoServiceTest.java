@@ -37,21 +37,20 @@ class TodoServiceTest {
     @Mock
     private TodoRepository repository;
 
-    @PersistenceContext
-    EntityManager em;
-
     @Test
     @DisplayName("유저 TodoList 조회 테스트")
     void retrieveTest() {
-        //given  (userId = user)
-        List<Todo> todoList = TodoFactory.createTodoList();
-        given(repository.findByUserId(anyString(), any())).willReturn(todoList);
+        //given
+        given(repository.findByUserId(anyString(), any()))
+                .willReturn(TodoFactory.createTodoList());
 
         //when
         List<Todo> findTodoList = service.retrieve("user");
 
         //then
         assertThat(findTodoList.get(0).getUserId()).isEqualTo("user");
+        assertThat(findTodoList.size()).isEqualTo(5);
+        verify(repository, times(1)).findByUserId(anyString(), any());
     }
 
     @Test
@@ -113,7 +112,8 @@ class TodoServiceTest {
     void changeSuccessTest() {
         //given
         Todo todo = TodoFactory.createTodo();
-        given(repository.findById(1L)).willReturn(Optional.of(todo));
+        given(repository.findById(1L))
+                .willReturn(Optional.of(todo));
 
         //when
         service.changeSuccess(1L);

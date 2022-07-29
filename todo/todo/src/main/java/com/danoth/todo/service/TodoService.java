@@ -30,8 +30,6 @@ public class TodoService {
     public List<Todo> create(Todo todo) {
         validate(todo);
         repository.save(todo);
-        log.info("user = {} ", todo.getUserId());
-        log.info("entity save = {} ", todo.getId());
         return retrieve(todo.getUserId());
     }
 
