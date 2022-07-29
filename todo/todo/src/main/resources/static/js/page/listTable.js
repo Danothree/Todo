@@ -27,29 +27,23 @@ const main = {
             saveList(obj);
             location.reload();
         });
-        // const checkbox = document.querySelector('.contentListChk');
-        // const text = document.querySelector('.contentList');
-        //
-        // checkbox.addEventListener('change', (event) => {
-        //     if(event.currentTarget.checked) {
-        //         text.style.textDecoration = 'line-through';
-        //     } else {
-        //         text.style.textDecoration = 'none';
-        //     }
-        // });
     }
 }
 //삭제
 function todoDel(id) {
-    deleteTable(id);
-    location.reload();
+    if (confirm('삭제하시겠습니까?')) {
+        deleteTable(id);
+        location.reload();
+    }
 }
 //수정
 function todoModi(id) {
-    const content = document.querySelector('.contentList');
+    let target = '.contentList'+id;
+    const content = document.querySelector(target);
     const modify = prompt('할일 수정',content.innerHTML);
     content.innerHTML = modify;
     obj = {
+        'id' : id,
         'content' : modify
     }
     modifyTable(id,obj);
@@ -80,7 +74,7 @@ function getList() {
                         '<input type="hidden" class="id" name="id" value="'+response[i].id+'"/>' +
                         '<input type="hidden" class="userId" name="userId" value="'+response[i].userId+'"/>' +
                         '<input class="form-check-input me-2" class="contentListChk" type="checkbox" value="'+response[i].completeCheck+'" aria-label="..."/>' +
-                        '<span class="contentList" name="contentList" style="color: #1b1e21">'+response[i].content+'</span>' +
+                        '<span class="contentList'+response[i].id+'" name="contentList" style="color: #1b1e21">'+response[i].content+'</span>' +
                         '</li>' +
                         '<button type="button" class="btn btn-info ms-2 delBtn" onclick="todoModi('+response[i].id+');">수정</button>' +
                         '<button type="button" class="btn btn-info ms-2 delBtn" onclick="todoDel('+response[i].id+');">삭제</button>' +
@@ -119,7 +113,7 @@ function deleteTable(id) {
     xhr.send();
 
     xhr.onload = function () {
-        if(xhr.status === 200) {
+        if (xhr.status === 200) {
             console.log('삭제 완료');
         }
     }
@@ -129,12 +123,15 @@ function modifyTable(id,obj) {
     const xhr = new XMLHttpRequest();
 
     xhr.open('PATCH', '/todo/'+id, true);
-    xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-    xhr.send(obj);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.send(JSON.stringify(obj));
 
     xhr.onload = function () {
         if(xhr.status === 200) {
             console.log('수정 완료');
+
+        } else {
+            console.log(xhr.response);
         }
     }
 }

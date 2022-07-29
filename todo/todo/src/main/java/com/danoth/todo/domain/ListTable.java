@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@DynamicUpdate
 @NoArgsConstructor
 @AllArgsConstructor
 public class ListTable extends BaseTimeEntity{

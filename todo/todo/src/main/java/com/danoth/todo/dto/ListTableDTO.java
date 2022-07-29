@@ -7,7 +7,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ListTableDTO {
+
     private Long id;
+    
     private String userId;
     private String content;
     private String completeCheck;

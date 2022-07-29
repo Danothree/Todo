@@ -5,11 +5,14 @@ import com.danoth.todo.dto.ListTableDTO;
 import com.danoth.todo.repository.ListTableRepository;
 import com.danoth.todo.service.ListTableService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class RestTodoController {
@@ -18,24 +21,28 @@ public class RestTodoController {
     private final ListTableRepository listTableRepository;
 
     @GetMapping("/todo")
-    public List<ListTableDTO> getList() {
-        return listTableService.getList();
+    public ResponseEntity<List<ListTableDTO>> getList() {
+        List<ListTableDTO> resultList = listTableService.getList();
+        log.info("ToDo List = {}", resultList);
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 
     @PostMapping("/todo")
-    public void saveTodoList(@RequestBody ListTableDTO listTableDTO) {
+    public ResponseEntity saveTodoList(@RequestBody ListTableDTO listTableDTO) {
         listTableService.save(listTableDTO);
+        return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/todo/{id}/{content}")
-    public void updateTodoList(@PathVariable Long id,@RequestParam String content) {
-        ListTable listTable = listTableRepository.findById(id).get();
-        listTable.modifyContent(content);
+    @PatchMapping("/todo/{id}")
+    public ResponseEntity updateTodoList(@PathVariable Long id,@RequestBody ListTableDTO listTableDTO) {
+        listTableService.update(id,listTableDTO);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/todo/{id}")
-    public void deleteTodoList(@PathVariable Long id) {
+    public ResponseEntity deleteTodoList(@PathVariable Long id) {
         listTableRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
 }

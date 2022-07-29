@@ -12,7 +12,7 @@ public class TodoController {
     private final ListTableRepository listTableRepository;
 
     @GetMapping
-    public String todoList(){
+    public String todoList() {
         return "index";
     }
 }
