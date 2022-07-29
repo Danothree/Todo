@@ -1,4 +1,4 @@
-package com.danoth.todo.exception;
+package com.danoth.todo.entity.exception;
 
 public class InvalidUserIdException extends RuntimeException{
 

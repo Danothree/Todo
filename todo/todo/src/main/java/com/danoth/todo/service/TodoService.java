@@ -1,15 +1,14 @@
 package com.danoth.todo.service;
 
 import com.danoth.todo.entity.Todo;
-import com.danoth.todo.exception.InvalidUserIdException;
-import com.danoth.todo.exception.TitleException;
+import com.danoth.todo.entity.exception.InvalidUserIdException;
+import com.danoth.todo.entity.exception.TitleException;
 import com.danoth.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityExistsException;

@@ -1,5 +1,6 @@
-package com.danoth.todo.controller;
+package com.danoth.todo.service.controller;
 
+import com.danoth.todo.controller.TodoController;
 import com.danoth.todo.service.TodoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;

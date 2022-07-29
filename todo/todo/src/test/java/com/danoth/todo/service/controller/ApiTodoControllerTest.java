@@ -1,5 +1,6 @@
-package com.danoth.todo.controller;
+package com.danoth.todo.service.controller;
 
+import com.danoth.todo.controller.ApiTodoController;
 import com.danoth.todo.dto.TodoDto;
 import com.danoth.todo.entity.Todo;
 import com.danoth.todo.factory.todo.TodoFactory;

@@ -1,7 +1,7 @@
 package com.danoth.todo.advice;
 
-import com.danoth.todo.exception.InvalidUserIdException;
-import com.danoth.todo.exception.TitleException;
+import com.danoth.todo.entity.exception.InvalidUserIdException;
+import com.danoth.todo.entity.exception.TitleException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
