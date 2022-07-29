@@ -18,6 +18,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -152,6 +153,8 @@ class TodoServiceTest {
                 .success(false)
                 .build();
 
+        given(repository.existsByUserId("user"))
+                .willReturn(true);
         given(repository.findByUserIdAndSuccess("user", false))
                 .willReturn(Arrays.asList(todo));
 
@@ -172,6 +175,8 @@ class TodoServiceTest {
                 .success(true)
                 .build();
 
+        given(repository.existsByUserId("user"))
+                .willReturn(true);
         given(repository.findByUserIdAndSuccess("user", true))
                 .willReturn(Arrays.asList(todo));
 
@@ -180,5 +185,17 @@ class TodoServiceTest {
 
         //then
         assertThat(todos.get(0).isSuccess()).isTrue();
+    }
+
+    @Test
+    @DisplayName("UserId 유효성 실패 테스트")
+    void userIdEntityNoFoundExceptionTest(){
+        //given
+        given(repository.existsByUserId("user"))
+                .willReturn(false);
+        //when, then
+        assertThrows(EntityNotFoundException.class, () -> {
+            service.activeList("user");
+        });
     }
 }

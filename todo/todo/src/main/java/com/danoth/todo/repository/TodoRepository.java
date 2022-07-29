@@ -15,6 +15,8 @@ public interface TodoRepository extends JpaRepository<Todo, Long> {
 
     List<Todo> findByUserIdAndSuccess(String userId, boolean success);
 
+    Boolean existsByUserId(String userId);
+
     @Query
     void deleteByUserIdAndSuccessIsTrue(String userId);
 }

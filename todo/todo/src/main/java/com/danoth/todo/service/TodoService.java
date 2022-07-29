@@ -13,6 +13,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Slf4j
@@ -52,15 +53,18 @@ public class TodoService {
 
     @Transactional(readOnly = true)
     public List<Todo> activeList(String userId) {
+        validateUserId(userId);
         return repository.findByUserIdAndSuccess(userId, false);
     }
 
     @Transactional(readOnly = true)
     public List<Todo> completedList(String userId) {
+        validateUserId(userId);
         return repository.findByUserIdAndSuccess(userId, true);
     }
 
     public void clearCompleted(String userId) {
+        validateUserId(userId);
         repository.deleteByUserIdAndSuccessIsTrue(userId);
     }
 
@@ -78,6 +82,12 @@ public class TodoService {
     private void validateUser(Todo todo){
         if(!StringUtils.hasText(todo.getUserId())){
             throw new InvalidUserIdException("Invalid userId value");
+        }
+    }
+
+    private void validateUserId(String userId){
+        if(!repository.existsByUserId(userId)){
+            throw new EntityNotFoundException("UserId not find");
         }
     }
 }

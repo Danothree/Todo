@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 
 import java.util.ArrayList;
@@ -100,9 +101,32 @@ class TodoRepositoryTest {
         //when
         repository.deleteByUserIdAndSuccessIsTrue("user");
         List<Todo> findTodos = repository.findByUserId("user");
-        
+
         //then
         assertThat(findTodos.size()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("userId 검증 성공 테스트")
+    void validateUserIdSuccessTest(){
+        //given
+        Todo todo = TodoFactory.createTodo();
+        repository.save(todo);
+        clear();
+
+        //when, then
+        assertThat(repository.existsByUserId(todo.getUserId()))
+                .isTrue();
+    }
+
+    @Test
+    @DisplayName("userId 검증 실패 테스트")
+    void validateUserIdFailureTest(){
+        //given
+
+        //given, when, then
+        assertThat(repository.existsByUserId("user"))
+                .isFalse();
     }
 
     private List<Todo> successTodos(){
