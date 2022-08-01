@@ -39,8 +39,13 @@ public class ListTable extends BaseTimeEntity{
         this.completeCheck = listTableDTO.getCompleteCheck();
     }
 
-    public void modifyContent(String content) {
-        this.content = content;
+    public void modifyList(ListTableDTO listTableDTO) {
+        if (listTableDTO.getContent() != null) {
+            this.content = listTableDTO.getContent();
+        }
+        if (listTableDTO.getCompleteCheck() != null) {
+            this.completeCheck = listTableDTO.getCompleteCheck();
+        }
     }
 
     @Builder

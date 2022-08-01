@@ -44,7 +44,6 @@ public class ListTableService {
 
     public void update(Long id, ListTableDTO listTableDTO) {
         ListTable listTable = listTableRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        listTable.modifyContent(listTableDTO.getContent());
-
+        listTable.modifyList(listTableDTO);
     }
 }

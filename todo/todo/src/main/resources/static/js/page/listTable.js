@@ -27,7 +27,23 @@ const main = {
             saveList(obj);
             location.reload();
         });
-    }
+    },
+    // chkList : (chk, id) => {
+    //     let obj;
+    //     if (chk === 'true') {
+    //         obj = {
+    //             'id' : id,
+    //             'completeCheck' : 'false'
+    //         }
+    //     } else {
+    //         obj = {
+    //             'id' : id,
+    //             'completeCheck' : 'true'
+    //         }
+    //     }
+    //     modifyTable(id, obj);
+    //     location.reload();
+    // }
 }
 //삭제
 function todoDel(id) {
@@ -50,6 +66,31 @@ function todoModi(id) {
     location.reload();
 }
 
+function chkList(chk, id) {
+    let parentNode = document.querySelector('.contentList'+id).parentNode;
+    let obj;
+    if (chk !== true) {
+        parentNode.style.textDecoration = 'line-through';
+        parentNode.style.fontStyle = 'italic';
+        parentNode.style.color = 'lightgray';
+        parentNode.color = 'red';
+    obj = {
+        'id' : id,
+        'completeCheck' : 'true'
+        }
+    } else {
+        parentNode.style.textDecoration = '';
+        parentNode.style.fontStyle = '';
+        parentNode.style.color = '';
+        parentNode.color = '';
+        obj = {
+            'id' : id,
+            'completeCheck' : 'false'
+        }
+    }
+    modifyTable(id, obj);
+}
+
 function getList() {
     const xhr = new XMLHttpRequest;
 
@@ -67,14 +108,18 @@ function getList() {
                 console.log(response[0].content);
                 console.log(response.length);
                 for (let i = 0; i < response.length; i++) {
+                    let chk = '';
+                    if (response[i].completeCheck === 'true') {
+                        chk = 'checked';
+                    };
                     tag += '<ul class="list-group mb-0">' +
                         '<form class="d-flex justify-content-center align-items-center mb-4 formList">' +
                         '<li class="list-group-item d-flex align-items-center border-0 rounded"' +
                         'style="background-color: #f4f6f7;">' +
                         '<input type="hidden" class="id" name="id" value="'+response[i].id+'"/>' +
                         '<input type="hidden" class="userId" name="userId" value="'+response[i].userId+'"/>' +
-                        '<input class="form-check-input me-2" class="contentListChk" type="checkbox" value="'+response[i].completeCheck+'" aria-label="..."/>' +
-                        '<span class="contentList'+response[i].id+'" name="contentList" style="color: #1b1e21">'+response[i].content+'</span>' +
+                        '<input class="form-check-input me-2" class="contentListChk" type="checkbox" '+chk+' onclick="chkList('+response[i].completeCheck+','+response[i].id+');" aria-label="..."/>' +
+                        '<span class="contentList'+response[i].id+' contentList" name="contentList" style="color: #1b1e21">'+response[i].content+'</span>' +
                         '</li>' +
                         '<button type="button" class="btn btn-info ms-2 delBtn" onclick="todoModi('+response[i].id+');">수정</button>' +
                         '<button type="button" class="btn btn-info ms-2 delBtn" onclick="todoDel('+response[i].id+');">삭제</button>' +
@@ -86,11 +131,7 @@ function getList() {
         }
     };
 }
-// function correctionFrame(e, id) {
-//     const todoSpan = document.createElement('span');
-//     todoSpan.classList.add('contentList');
-//     todoSpan.addEventListener()
-// }
+
 
 function saveList(obj) {
     const xhr = new XMLHttpRequest;
