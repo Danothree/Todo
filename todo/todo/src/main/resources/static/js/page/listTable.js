@@ -67,28 +67,99 @@ function todoModi(id) {
 }
 
 function chkList(chk, id) {
-    let parentNode = document.querySelector('.contentList'+id).parentNode;
     let obj;
+    let parentNode = document.querySelector('.li'+id);
     if (chk !== true) {
-        parentNode.style.textDecoration = 'line-through';
-        parentNode.style.fontStyle = 'italic';
-        parentNode.style.color = 'lightgray';
-        parentNode.color = 'red';
     obj = {
         'id' : id,
         'completeCheck' : 'true'
         }
+        parentNode.classList.add('addSty');
     } else {
-        parentNode.style.textDecoration = '';
-        parentNode.style.fontStyle = '';
-        parentNode.style.color = '';
-        parentNode.color = '';
         obj = {
             'id' : id,
             'completeCheck' : 'false'
         }
+        parentNode.classList.remove('addSty');
     }
     modifyTable(id, obj);
+    location.reload();
+}
+
+function activeList() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/todo/active', true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.send('false');
+
+    xhr.onload = function () {
+        if(xhr.readyState === 4) {
+            console.log('통신 완료');
+        }
+        if(xhr.status === 200) {
+            let tag = '';
+            let response = JSON.parse(xhr.response);
+            const inSpan = document.querySelector('.inSpan');
+            for (let i = 0; i < response.length; i++) {
+                let chk = '';
+                if (response[i].completeCheck === 'true') {
+                    chk = 'checked';
+                };
+                tag += '<ul class="list-group mb-0">' +
+                    '<form class="d-flex justify-content-center align-items-center mb-4 formList">' +
+                    '<li class="list-group-item d-flex align-items-center border-0 rounded li'+response[i].id+'"' +
+                    'style="background-color: #f4f6f7;">' +
+                    '<input type="hidden" class="id" name="id" value="'+response[i].id+'"/>' +
+                    '<input type="hidden" class="userId" name="userId" value="'+response[i].userId+'"/>' +
+                    '<input class="form-check-input me-2" class="contentListChk" type="checkbox" '+chk+' onclick="chkList('+response[i].completeCheck+','+response[i].id+');" aria-label="..."/>' +
+                    '<span class="contentList'+response[i].id+' contentList" name="contentList" style="color: #1b1e21">'+response[i].content+'</span>' +
+                    '</li>' +
+                    '<button type="button" class="btn btn-info ms-2 delBtn" onclick="todoModi('+response[i].id+');">수정</button>' +
+                    '<button type="button" class="btn btn-info ms-2 delBtn" onclick="todoDel('+response[i].id+');">삭제</button>' +
+                    '</form>' +
+                    '</ul>'
+            }
+            inSpan.innerHTML = tag;
+        }
+    }
+}
+
+function completeList() {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', '/todo/active', true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.send('true');
+
+    xhr.onload = function () {
+        if(xhr.readyState === 4) {
+            console.log('통신 완료');
+        }
+        if(xhr.status === 200) {
+            let tag = '';
+            let response = JSON.parse(xhr.response);
+            const inSpan = document.querySelector('.inSpan');
+            for (let i = 0; i < response.length; i++) {
+                let chk = '';
+                if (response[i].completeCheck === 'true') {
+                    chk = 'checked';
+                };
+                tag += '<ul class="list-group mb-0">' +
+                    '<form class="d-flex justify-content-center align-items-center mb-4 formList">' +
+                    '<li class="list-group-item d-flex align-items-center border-0 rounded li'+response[i].id+'"' +
+                    'style="background-color: #f4f6f7;">' +
+                    '<input type="hidden" class="id" name="id" value="'+response[i].id+'"/>' +
+                    '<input type="hidden" class="userId" name="userId" value="'+response[i].userId+'"/>' +
+                    '<input class="form-check-input me-2" class="contentListChk" type="checkbox" '+chk+' onclick="chkList('+response[i].completeCheck+','+response[i].id+');" aria-label="..."/>' +
+                    '<span class="contentList'+response[i].id+' contentList" name="contentList" style="color: #1b1e21">'+response[i].content+'</span>' +
+                    '</li>' +
+                    '<button type="button" class="btn btn-info ms-2 delBtn" onclick="todoModi('+response[i].id+');">수정</button>' +
+                    '<button type="button" class="btn btn-info ms-2 delBtn" onclick="todoDel('+response[i].id+');">삭제</button>' +
+                    '</form>' +
+                    '</ul>'
+            }
+            inSpan.innerHTML = tag;
+        }
+    }
 }
 
 function getList() {
@@ -111,10 +182,11 @@ function getList() {
                     let chk = '';
                     if (response[i].completeCheck === 'true') {
                         chk = 'checked';
+
                     };
                     tag += '<ul class="list-group mb-0">' +
                         '<form class="d-flex justify-content-center align-items-center mb-4 formList">' +
-                        '<li class="list-group-item d-flex align-items-center border-0 rounded"' +
+                        '<li class="list-group-item d-flex align-items-center border-0 rounded li'+response[i].id+'"' +
                         'style="background-color: #f4f6f7;">' +
                         '<input type="hidden" class="id" name="id" value="'+response[i].id+'"/>' +
                         '<input type="hidden" class="userId" name="userId" value="'+response[i].userId+'"/>' +
@@ -143,6 +215,10 @@ function saveList(obj) {
     xhr.onload = function () {
         if(xhr.status === 200) {
             console.log(xhr.response);
+        } else {
+            let parse = JSON.parse(xhr.response);
+
+            alert(parse.innerHTML);
         }
     }
 }

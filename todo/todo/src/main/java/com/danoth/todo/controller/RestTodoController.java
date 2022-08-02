@@ -8,8 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -27,20 +31,32 @@ public class RestTodoController {
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 
+    @PostMapping("/todo/active")
+    public ResponseEntity<List<ListTableDTO>> getActiveList(@RequestBody String trueFalse) {
+        List<ListTableDTO> resultList = listTableService.getActiveList(trueFalse);
+        return new ResponseEntity<>(resultList, HttpStatus.OK);
+    }
+
     @PostMapping("/todo")
-    public ResponseEntity saveTodoList(@RequestBody ListTableDTO listTableDTO) {
+    public ResponseEntity saveTodoList(@RequestBody @Validated ListTableDTO listTableDTO, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
+
         listTableService.save(listTableDTO);
+
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/todo/{id}")
-    public ResponseEntity updateTodoList(@PathVariable Long id,@RequestBody ListTableDTO listTableDTO) {
+    public ResponseEntity updateTodoList(@PathVariable @Valid Long id,@RequestBody ListTableDTO listTableDTO) {
         listTableService.update(id,listTableDTO);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/todo/{id}")
-    public ResponseEntity deleteTodoList(@PathVariable Long id) {
+    public ResponseEntity deleteTodoList(@PathVariable @Valid Long id) {
         listTableRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }

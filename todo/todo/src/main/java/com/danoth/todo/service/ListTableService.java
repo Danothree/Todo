@@ -46,4 +46,14 @@ public class ListTableService {
         ListTable listTable = listTableRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         listTable.modifyList(listTableDTO);
     }
+
+    public List<ListTableDTO> getActiveList(String trueFalse) {
+        List<ListTable> listTableList = listTableRepository.findAll();
+        List<ListTableDTO> resultDTO = new ArrayList<>();
+        listTableList.stream().filter(lt -> lt.getCompleteCheck().equals(trueFalse)).forEach(f -> {
+            ListTableDTO listTableDTO = new ListTableDTO(f);
+            resultDTO.add(listTableDTO);
+        });
+        return resultDTO;
+    }
 }
